@@ -6,7 +6,8 @@ import java.util.List;
 public class Test
 {
     private List<Question> questions;
-
+    private int pointsMax;
+    private List<boolean[]> answerKeys;
 
 
     public List<Question> getQuestions()
@@ -14,23 +15,40 @@ public class Test
         return questions;
     }
 
+    public boolean[] getAnswerKey(int id)
+    {
+        if(id >= 0 && id < questions.size())
+        {
+            //return questions.get(id).geta;
+        }
+        return null;
+    }
+
+    public Question getQuestion(int id)
+    {
+        if(id >= 0 && id < questions.size())
+        {
+            return questions.get(id);
+        }
+        return null;
+    }
+
     public void setQuestions(List<Question> questions)
     {
         this.questions = questions;
     }
 
-    public List<Boolean[]> GenerateAnswerKey()
+    public List<boolean[]> getAnswerKeys()
     {
-        List<Boolean[]> answerKeys = new ArrayList<>();
+        return answerKeys;
+    }
+
+    private void setAnswerKeys()
+    {
+        answerKeys = new ArrayList<>();
         for(Question question : questions)
         {
-            Boolean[] answerKey = new Boolean[question.getAnswers().size()];
-            for(int i = 0; i < answerKey.length; i++)
-            {
-                answerKey[i] = question.getAnswer(i).isCorrect();
-            }
-            answerKeys.add(answerKey);
+            answerKeys.add(question.getAnswerKey());
         }
-        return answerKeys;
     }
 }

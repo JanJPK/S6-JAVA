@@ -9,21 +9,11 @@ public class Question
     private String text;
     private List<Answer> answers;
     private int goodAnswers;
+    private boolean[] answerKey;
 
     public Question()
     {
         answers = new ArrayList<>();
-    }
-
-    private void CheckAmountOfGoodAnswers()
-    {
-        for(Answer answer : answers)
-        {
-            if(answer.isCorrect())
-            {
-                goodAnswers++;
-            }
-        }
     }
 
     public String getText()
@@ -43,7 +33,7 @@ public class Question
 
     public Answer getAnswer(int id)
     {
-        if(id >= 0 && id < answers.size())
+        if (id >= 0 && id < answers.size())
         {
             return answers.get(id);
         }
@@ -60,14 +50,6 @@ public class Question
         this.id = id;
     }
 
-    public void AddAnswer(String text, boolean correct)
-    {
-        if(!text.equals(""))
-        {
-            answers.add(new  Answer(text, correct));
-        }
-    }
-
     public int getGoodAnswers()
     {
         return goodAnswers;
@@ -77,4 +59,36 @@ public class Question
     {
         this.goodAnswers = goodAnswers;
     }
+
+    public boolean[] getAnswerKey()
+    {
+        return answerKey;
+    }
+
+    private void setAnswerKey()
+    {
+        answerKey = new boolean[answers.size()];
+        goodAnswers = 0;
+        for (int i = 0; i < answers.size(); i++)
+        {
+            Answer answer = answers.get(i);
+            answerKey[i] = answer.isCorrect();
+            goodAnswers++;
+        }
+
+        if (goodAnswers == 0)
+        {
+            // TODO: Exception
+        }
+    }
+
+    public void addAnswer(String text, boolean correct)
+    {
+        if (!text.equals(""))
+        {
+            answers.add(new Answer(text, correct));
+        }
+    }
+
+
 }
