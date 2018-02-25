@@ -1,23 +1,43 @@
 package testcheck.library;
 
+import javax.xml.bind.annotation.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TestResult
 {
-    private List<boolean[]> answers;
-    private String studentName;
-    private int studentId;
-    private float pointsEarned;
+    //<editor-fold desc="variables">
 
+    @XmlElementWrapper(name = "answers")
+    @XmlElement(name = "answer")
+    private List<boolean[]> answers;
+    @XmlElement
+    private String studentName;
+    @XmlElement
+    private int studentId;
+    @XmlElement
+    private float pointsEarned;
+    @XmlElement
+    private float grade;
+
+    //</editor-fold>
+
+    //<editor-fold desc="constructor">
 
     public TestResult(String path)
     {
+        answers = new ArrayList<>();
         loadTest(path);
-
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="get/set">
 
     public int getStudentId()
     {
@@ -44,6 +64,30 @@ public class TestResult
         return answers;
     }
 
+    public float getGrade()
+    {
+        return grade;
+    }
+
+    public void setGrade(float grade)
+    {
+        this.grade = grade;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="methods">
+
+    public void grade(Test test)
+    {
+
+    }
+
+    /**
+     * Checks answers with answer key taken from Test object.
+     *
+     * @param test object containing answer key.
+     */
     public void checkAnswers(Test test)
     {
         float totalResult = 0;
@@ -54,8 +98,8 @@ public class TestResult
             boolean[] answer = answers.get(i);
             for (int j = 0; j < answer.length; j++)
             {
-                if (answer[j] != question.getAnswerKey()[j])
-                    result -= 1 / question.getGoodAnswers();
+                if (answer[j] != question.getAnswerKey().get(i))
+                    result -= 1 / question.getAmountOfGoodAnswers();
 
             }
             if (result > 0)
@@ -67,6 +111,7 @@ public class TestResult
     /**
      * Loads answers from .csv.
      * Reads file line by line and converts them to arrays of boolean.
+     *
      * @param path location of the .csv file.
      */
     private void loadTest(String path)
@@ -76,7 +121,7 @@ public class TestResult
         {
             BufferedReader br = new BufferedReader(new FileReader(path));
             String line;
-            while((line = br.readLine()) != null)
+            while ((line = br.readLine()) != null)
             {
                 String[] splitLines = line.split(",");
                 boolean[] answer = new boolean[splitLines.length];
@@ -92,5 +137,7 @@ public class TestResult
             ex.printStackTrace();
         }
     }
+
+    //</editor-fold>
 
 }

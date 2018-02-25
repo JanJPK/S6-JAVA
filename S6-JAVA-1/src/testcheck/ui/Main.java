@@ -6,9 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class Main extends Application
 {
 
@@ -18,7 +15,7 @@ public class Main extends Application
         Parent root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
 
         primaryStage.setTitle("Testcheck");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }
 

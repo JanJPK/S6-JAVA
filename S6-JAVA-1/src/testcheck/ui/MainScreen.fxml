@@ -1,57 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" hgap="10.0" vgap="10.0"
+<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainGrid" alignment="CENTER" hgap="10.0" vgap="10.0"
           xmlns="http://javafx.com/javafx/2.2" fx:controller="testcheck.ui.MainScreenController">
     <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="0"
              GridPane.rowIndex="0">
         <tabs>
-
-            <Tab text="debug">
-                <content>
-                    <GridPane fx:id="debugGrid" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                        <children>
-                            <Button onAction="#sayHelloWorld" text="Say 'Hello World'" GridPane.columnIndex="0"
-                                    GridPane.rowIndex="0"/>
-                            <Label fx:id="helloWorld" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                            <Button onAction="#selectTestResultsFolder" text="Select folder" GridPane.columnIndex="1"
-                                    GridPane.rowIndex="0"/>
-                        </children>
-                    </GridPane>
-                </content>
+            <!-- Main tab with welcome screen. -->
+            <Tab text="Start">
+                <StackPane fx:id="mainStackPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <ImageView>
+                        <Image url="@/splashscreen_background.png"/>
+                    </ImageView>
+                    <VBox alignment="CENTER">
+                        <ImageView fitWidth="700.0" preserveRatio="true">
+                            <Image url="@/testcheck_logo_big.png"/>
+                        </ImageView>
+                        <HBox alignment="CENTER" spacing="10">
+                            <Button text="Load a test" onAction="#loadTest"/>
+                            <Button text="Create a test" onAction="#createTest"/>
+                        </HBox>
+                    </VBox>
+                </StackPane>
             </Tab>
 
-            <Tab text="Verify results">
-                <content>
-                    <GridPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
-                </content>
+            <!-- Results tab; loading test results. -->
+            <Tab text="Results">
+                <GridPane fx:id="resultsGrid" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <VBox GridPane.columnIndex="0" spacing="1">
+                        <HBox spacing="10">
+                            <Button text="Directory" onAction="#loadTestResults"/>
+                            <Button text="New" onAction="#createTestResult"/>
+                        </HBox>
+                        <ListView fx:id="testResultsListView" onMouseClicked="#loadTestResultAnswers"/>
+                    </VBox>
+                    <FlowPane fx:id="testResultAnswersFlowPane"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="0"/>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                </GridPane>
             </Tab>
 
-            <Tab text="Manage test">
-                <content>
-                    <GridPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                        <children>
-                            <ListView GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                            <TableView GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                <columns>
-                                    <TableColumn text="Column X"/>
-                                    <TableColumn text="Column X"/>
-                                </columns>
-                            </TableView>
-                        </children>
-                        <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
-                        </rowConstraints>
-                    </GridPane>
-                </content>
+            <!-- Statistics tab -->
+            <Tab text="Statistics">
+                <GridPane fx:id="statisticsGrid" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
             </Tab>
 
+            <!-- Test management tab. Editing and creating questions for the test. -->
+            <Tab text="Questions">
+                <GridPane fx:id="questionsGrid" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <VBox GridPane.columnIndex="0" spacing="10">
+                        <HBox spacing="10">
+                            <Button text="New" onAction="#createTestResult"/>
+                        </HBox>
+                        <ListView fx:id="questionListView" onMouseClicked="#loadQuestionAnswers"/>
+                    </VBox>
+                    <FlowPane fx:id="questionAnswersFlowPane"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="0"/>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                </GridPane>
+            </Tab>
+
+            <!-- Test grading management -->
+            <Tab text="Grading">
+                <GridPane fx:id="gradingGrid" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+
+                </GridPane>
+            </Tab>
         </tabs>
     </TabPane>
     <columnConstraints>

@@ -1,23 +1,47 @@
 package testcheck.library;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Test
 {
+
+    //<editor-fold desc="variables">
+    @XmlElementWrapper(name = "questions")
+    @XmlElement(name = "question")
     private List<Question> questions;
+    @XmlElement
     private int pointsMax;
-    private List<boolean[]> answerKeys;
+    @XmlElement
+    private String name;
 
+    //</editor-fold>
 
+    //<editor-fold desc="constructor">
+    public Test()
+    {
+        questions = new ArrayList<>();
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="get/set">
     public List<Question> getQuestions()
     {
         return questions;
     }
 
+    public void setQuestions(List<Question> questions)
+    {
+        this.questions = questions;
+    }
+
     public boolean[] getAnswerKey(int id)
     {
-        if(id >= 0 && id < questions.size())
+        if (id >= 0 && id < questions.size())
         {
             //return questions.get(id).geta;
         }
@@ -26,29 +50,43 @@ public class Test
 
     public Question getQuestion(int id)
     {
-        if(id >= 0 && id < questions.size())
+        if (id >= 0 && id < questions.size())
         {
             return questions.get(id);
         }
         return null;
     }
 
-    public void setQuestions(List<Question> questions)
+    public String getName()
     {
-        this.questions = questions;
+        return name;
     }
 
-    public List<boolean[]> getAnswerKeys()
+    public void setName(String name)
     {
-        return answerKeys;
+        this.name = name;
     }
 
-    private void setAnswerKeys()
+    public int getPointsMax()
     {
-        answerKeys = new ArrayList<>();
-        for(Question question : questions)
-        {
-            answerKeys.add(question.getAnswerKey());
-        }
+        return pointsMax;
     }
+
+    public void setPointsMax(int pointsMax)
+    {
+        this.pointsMax = pointsMax;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="methods">
+
+    public void addQuestion(Question question)
+    {
+        questions.add(question);
+        pointsMax++;
+    }
+
+    //</editor-fold>
+
 }
