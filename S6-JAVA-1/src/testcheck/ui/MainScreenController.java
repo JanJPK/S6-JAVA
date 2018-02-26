@@ -2,6 +2,9 @@ package testcheck.ui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -14,11 +17,17 @@ import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Main controller.
+ */
 public class MainScreenController
 {
 
@@ -26,23 +35,60 @@ public class MainScreenController
 
     //<editor-fold desc="ui">
 
+    /**
+     * The constant questions.
+     */
     public static final ObservableList questions = FXCollections.observableArrayList();
+    /**
+     * The constant testResults.
+     */
     public static final ObservableList testResults = FXCollections.observableArrayList();
+    /**
+     * The Main grid.
+     */
     public GridPane mainGrid;
+    /**
+     * The Question list view.
+     */
     public ListView questionListView;
-    public Button saveQuestionAnswersButton;
-    public Button saveTestResultAnswersSaveButton;
+    /**
+     * The Results grid.
+     */
     public GridPane resultsGrid;
-    public GridPane questionsGrid;
+    /**
+     * The Grading grid.
+     */
     public GridPane gradingGrid;
+    /**
+     * The Test results list view.
+     */
     public ListView testResultsListView;
+    /**
+     * The Test result answers v box.
+     */
     public VBox testResultAnswersVBox;
+    /**
+     * The Question answers v box.
+     */
     public VBox questionAnswersVBox;
+    /**
+     * The Grading v box.
+     */
     public VBox gradingVBox;
+    /**
+     * The Test name grading label.
+     */
     public Label testNameGradingLabel;
+    /**
+     * The Histogram h box.
+     */
+    public HBox histogramHBox;
+    /**
+     * The Average and median h box.
+     */
+    public HBox averageAndMedianHBox;
 
     //</editor-fold>
-
 
     private TestStatistics testStatistics;
     private Test test;
@@ -65,8 +111,8 @@ public class MainScreenController
         {
             unmarshalTest(file);
             loadQuestionListView();
-            populateGradingVBox();
-            showDialogInformation("Test has been loaded.","");
+            loadGradingVBox();
+            showDialogInformation("Test has been loaded.", "");
         } else
         {
             showDialogError("Incorrect file extension!",
@@ -74,21 +120,48 @@ public class MainScreenController
         }
     }
 
-
     /**
-     * Called from start tab; moves the user to test edit tab.
+     * Create a fake test for testing the program.
      */
-    public void newTest()
+    public void createFakeTest()
     {
+        Random rng = new Random();
+        test = new Test();
+        test.setName("Example exam 2018");
+        int questionAmount = 15;
+        for (int i = 0; i < questionAmount; i++)
+        {
+            Question question = new Question();
+            question.setText("Question " + i);
+            question.setId(i + 1);
+            question.addAnswer("Answer A-" + i, rng.nextBoolean());
+            question.addAnswer("Answer B-" + i, true);
+            question.addAnswer("Answer C-" + i, rng.nextBoolean());
+            test.addQuestion(question);
+        }
+        test.setPointThreshold(4, 14);
+        test.setPointThreshold(3, 12);
+        test.setPointThreshold(2, 10);
+        test.setPointThreshold(1, 8);
+        test.setPointThreshold(0, 6);
 
+        marshalTest(test, "example_exam");
     }
 
     //</editor-fold>
 
     //<editor-fold desc="results-methods">
 
+    /**
+     * Load test results.
+     */
     public void loadTestResults()
     {
+        if (test == null)
+        {
+            showDialogError("No test loaded!", "Begin by loading a test .xml.");
+            return;
+        }
         DirectoryChooser dc = new DirectoryChooser();
         dc.setTitle("Choose the directory containing test results");
         File directory = dc.showDialog(mainGrid.getScene().getWindow());
@@ -115,10 +188,14 @@ public class MainScreenController
         } else
         {
             showDialogError("No files found!",
-                    "Directory does not contain files in required format.");
+                    "Directory does not contain files  the required format.");
         }
+        loadStatistics();
     }
 
+    /**
+     * Load test result answers (details).
+     */
     public void loadTestResultAnswers()
     {
         int selectedIndex = testResultsListView.getSelectionModel().getSelectedIndex();
@@ -143,45 +220,93 @@ public class MainScreenController
 
         }
         testResultAnswersVBox.getChildren().clear();
+        testResultAnswersVBox
+                .getChildren()
+                .add(new Label("Points: " + testResult.getPointsEarned()));
+        testResultAnswersVBox
+                .getChildren()
+                .add(new Label("Grade: " + testResult.getGrade()));
         testResultAnswersVBox.getChildren().addAll(hBoxes);
-        //initializeTestResultAnswersSaveButton();
-    }
-
-    public void createTestResult()
-    {
-
-    }
-
-    public void initializeTestResultAnswersSaveButton()
-    {
-        if (saveTestResultAnswersSaveButton == null)
-        {
-            saveTestResultAnswersSaveButton = new Button();
-            saveTestResultAnswersSaveButton.setText("Save changes");
-            saveTestResultAnswersSaveButton.setOnAction(event -> saveTestResultAnswers());
-        }
-        testResultAnswersVBox.getChildren().add(saveTestResultAnswersSaveButton);
-    }
-
-    public void saveTestResultAnswers()
-    {
-
-    }
-    
-    public void checkTestResults()
-    {
-        
+        testStatistics.gradeTestResults();
     }
 
     //</editor-fold>
 
     //<editor-fold desc="statistics-methods">
 
+    /**
+     * Load statistics.
+     */
+    public void loadStatistics()
+    {
+        if (test == null)
+        {
+            showDialogError("No test loaded!", "Begin by loading a test .xml.");
+            return;
+        }
+
+        if (testStatistics == null || testStatistics.getTestResults().size() <= 0)
+        {
+            showDialogError("No test results loaded!", "Begin by loading test results from a directory.");
+            return;
+        }
+
+        testStatistics.calculateStatisticsData();
+        histogramHBox.getChildren().clear();
+        averageAndMedianHBox.getChildren().clear();
+        loadGradeBarChart();
+        loadPointsBarChart();
+        loadAverageAndMedian();
+    }
+
+    private void loadGradeBarChart()
+    {
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Grades");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Count");
+
+        BarChart bc = new BarChart(xAxis, yAxis);
+        bc.getData().add(testStatistics.getDataGradesHistogram());
+
+        histogramHBox.getChildren().add(bc);
+    }
+
+    private void loadPointsBarChart()
+    {
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Points");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Count");
+
+        BarChart bc = new BarChart(xAxis, yAxis);
+        bc.getData().add(testStatistics.getDataPointsHistogram());
+
+        histogramHBox.getChildren().add(bc);
+    }
+
+    private void loadAverageAndMedian()
+    {
+        averageAndMedianHBox
+                .getChildren()
+                .add(new Label("Average points: " + testStatistics.getDataAveragePoints()));
+        averageAndMedianHBox
+                .getChildren()
+                .add(new Label("Median points: " + testStatistics.getDataMedianPoints()));
+        averageAndMedianHBox
+                .getChildren()
+                .add(new Label("Median grade: " + testStatistics.getDataMedianGrade()));
+    }
 
     //</editor-fold>
 
     //<editor-fold desc="questions-methods">
 
+    /**
+     * Load question answers.
+     */
     public void loadQuestionAnswers()
     {
         int selectedIndex = questionListView.getSelectionModel().getSelectedIndex();
@@ -204,6 +329,9 @@ public class MainScreenController
         //questionAnswersVBox.getChildren().add(saveQuestionAnswersButton);
     }
 
+    /**
+     * Load question list view.
+     */
     public void loadQuestionListView()
     {
         questions.addAll(test.getQuestions());
@@ -211,19 +339,21 @@ public class MainScreenController
         questionListView.setItems(questions);
     }
 
-
     //</editor-fold>
-    
+
     //<editor-fold desc="grading-methods">
 
-    public void populateGradingVBox()
+    /**
+     * Load grading v box.
+     */
+    public void loadGradingVBox()
     {
-        if(gradingVBox.getChildren().isEmpty() && test != null)
+        if (gradingVBox.getChildren().isEmpty() && test != null)
         {
             testNameGradingLabel.setText(test.getName());
-            String[] grades = new String[] {"3.0", "3.5", "4.0", "4.5", "5.0"};
+            String[] grades = test.getGrades();
             int[] pointThresholds = test.getPointThresholds();
-            for(int i = 0; i < grades.length;i++)
+            for (int i = 0; i < grades.length; i++)
             {
                 Label label = new Label("   " + grades[i]);
                 TextField textField = new TextField();
@@ -240,97 +370,42 @@ public class MainScreenController
     }
 
     //</editor-fold>
-    
-    //<editor-fold desc="methods">
-
-    private void initializeSaveQuestionAnswersButton()
-    {
-        if (saveQuestionAnswersButton == null)
-        {
-            saveQuestionAnswersButton = new Button();
-            saveQuestionAnswersButton.setText("Save changes");
-            saveQuestionAnswersButton.setOnAction(event -> loadQuestionAnswers());
-        }
-    }
-
-    public void createTest()
-    {
-
-    }
-
-    public void createFakeTest()
-    {
-        initializeSaveQuestionAnswersButton();
-        Random rng = new Random();
-        test = new Test();
-        test.setName("Example exam 2018");
-        int questionAmount = 15;
-        for (int i = 0; i < questionAmount; i++)
-        {
-            Question question = new Question();
-            question.setText("Question " + i);
-            question.setId(i + 1);
-            question.addAnswer("Answer A-" + i, rng.nextBoolean());
-            question.addAnswer("Answer B-" + i, true);
-            question.addAnswer("Answer C-" + i, rng.nextBoolean());
-            test.addQuestion(question);
-        }
-        test.setPointThreshold(4, 14);
-        test.setPointThreshold(3, 12);
-        test.setPointThreshold(2, 10);
-        test.setPointThreshold(1, 8);
-        test.setPointThreshold(0, 6);
-
-        //loadQuestionListView(test);
-        marshalTest(test);
-    }
-
-
-    public void testToXML(Test test)
-    {
-        StringWriter sw = new StringWriter();
-        JAXB.marshal(test, sw);
-        String testXML = sw.toString();
-
-        try
-        {
-            PrintWriter out = new PrintWriter("test.xml");
-            out.print(testXML);
-            out.close();
-        } catch (FileNotFoundException ex)
-        {
-
-        }
-    }
-
-    public void xmlToTest(String path)
-    {
-
-    }
-
-
-
-    //</editor-fold>
 
     //<editor-fold desc="marshal-methods">
 
-    private void marshalTest(Test test)
+    /**
+     * Marshals the Test object into .xml file with given filename.
+     *
+     * @param test     object to marshal
+     * @param filename filename of .xml file
+     */
+    private void marshalTest(Test test, String filename)
     {
+        if (test == null)
+        {
+            showDialogError("There is no test object to save!", "Load a test object first.");
+            return;
+        }
         StringWriter sw = new StringWriter();
         JAXB.marshal(test, sw);
         String testXML = sw.toString();
 
         try
         {
-            PrintWriter out = new PrintWriter("test.xml");
+            PrintWriter out = new PrintWriter(filename + ".xml");
             out.print(testXML);
             out.close();
         } catch (FileNotFoundException ex)
         {
-            showDialogError("Write error", "Incorrect filename.");
+            showDialogError("Write error!", "Incorrect filename.");
         }
     }
 
+    /**
+     * Unmarshals the given file into Test object.
+     *
+     * @param file file containing path to proper .xml
+     */
     private void unmarshalTest(File file)
     {
         try
@@ -349,6 +424,12 @@ public class MainScreenController
 
     //<editor-fold desc="dialog-methods">
 
+    /**
+     * Displays an error dialog.
+     *
+     * @param header  dialog's header
+     * @param content dialog's content
+     */
     private void showDialogError(String header, String content)
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -358,6 +439,12 @@ public class MainScreenController
         alert.showAndWait();
     }
 
+    /**
+     * Displays an information dialog.
+     *
+     * @param header  dialog's header
+     * @param content dialog's content
+     */
     private void showDialogInformation(String header, String content)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -368,5 +455,5 @@ public class MainScreenController
     }
 
     //</editor-fold>
-    
+
 }

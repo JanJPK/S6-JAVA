@@ -4,12 +4,18 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Test; collection of Questions. Also contains grading rules.
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Test
 {
 
     //<editor-fold desc="variables">
+
+    @XmlElement
+    private static String[] grades = new String[]{"3.0", "3.5", "4.0", "4.5", "5.0"};
     @XmlElementWrapper(name = "questions")
     @XmlElement(name = "question")
     private List<Question> questions;
@@ -23,6 +29,10 @@ public class Test
     //</editor-fold>
 
     //<editor-fold desc="constructor">
+
+    /**
+     * Instantiates a new Test.
+     */
     public Test()
     {
         questions = new ArrayList<>();
@@ -32,73 +42,89 @@ public class Test
     //</editor-fold>
 
     //<editor-fold desc="get/set">
+
+    /**
+     * Gets questions.
+     *
+     * @return the questions
+     */
     public List<Question> getQuestions()
     {
         return questions;
     }
 
+    /**
+     * Sets questions.
+     *
+     * @param questions the questions
+     */
     public void setQuestions(List<Question> questions)
     {
         this.questions = questions;
     }
 
-    public boolean[] getAnswerKey(int id)
+
+    /**
+     * Gets a single question.
+     *
+     * @param i the index
+     * @return the question
+     */
+    public Question getQuestion(int i)
     {
-        if (id >= 0 && id < questions.size())
+        if (i >= 0 && i < questions.size())
         {
-            //return questions.get(id).geta;
+            return questions.get(i);
         }
         return null;
     }
 
-    public Question getQuestion(int id)
-    {
-        if (id >= 0 && id < questions.size())
-        {
-            return questions.get(id);
-        }
-        return null;
-    }
-
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Gets points max.
+     *
+     * @return the points max
+     */
     public int getPointsMax()
     {
-        return pointsMax;
+        return questions.size();
     }
 
-    public void setPointsMax(int pointsMax)
-    {
-        this.pointsMax = pointsMax;
-    }
-
+    /**
+     * Get point thresholds.
+     *
+     * @return the int[]
+     */
     public int[] getPointThresholds()
     {
         return pointThresholds;
     }
 
-    public void setPointThresholds(int[] pointThresholds)
-    {
-        this.pointThresholds = pointThresholds;
-    }
-
-    public int getPointThreshold(int i)
-    {
-        if (i >= 0 && i < pointThresholds.length)
-        {
-            return pointThresholds[i];
-        }
-        return 0;
-    }
-
+    /**
+     * Sets point threshold of value at i.
+     *
+     * @param i     the
+     * @param value the value
+     */
     public void setPointThreshold(int i, int value)
     {
         if (i >= 0 && i < pointThresholds.length)
@@ -117,10 +143,47 @@ public class Test
         }
     }
 
+    /**
+     * Gets grade.
+     *
+     * @param points the points
+     * @return the grade
+     */
+    public String getGrade(float points)
+    {
+        if (points < pointThresholds[0])
+            return "2.0";
+
+        for (int i = 0; i < pointThresholds.length; i++)
+        {
+            if (points <= pointThresholds[i])
+            {
+                return grades[i];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get possible grades string[].
+     *
+     * @return the string[]
+     */
+    public String[] getGrades()
+    {
+        return grades;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="methods">
 
+    /**
+     * Adds a new question.
+     *
+     * @param question the question
+     */
     public void addQuestion(Question question)
     {
         questions.add(question);

@@ -4,12 +4,16 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Question. Represents a single question with collection of possible answers.
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Question
 {
 
     //<editor-fold desc="variables">
+
     @XmlElement
     private int id;
     @XmlElement(name = "questionText")
@@ -17,14 +21,16 @@ public class Question
     @XmlElementWrapper(name = "answers")
     @XmlElement(name = "answer")
     private List<Answer> answers;
-    @XmlElement(name = "amountOfGoodAnswers")
-    private int amountOfGoodAnswers;
     @XmlElement(name = "answerKey")
     private List<Boolean> answerKey;
 
     //</editor-fold>
 
     //<editor-fold desc="constructor">
+
+    /**
+     * Instantiates a new Question.
+     */
     public Question()
     {
         answers = new ArrayList<>();
@@ -34,96 +40,121 @@ public class Question
     //</editor-fold>
 
     //<editor-fold desc="get/set">
+
+    /**
+     * Gets text.
+     *
+     * @return the text
+     */
     public String getText()
     {
         return text;
     }
 
+    /**
+     * Sets text.
+     *
+     * @param text the text
+     */
     public void setText(String text)
     {
         this.text = text;
     }
 
-    public Answer getAnswer(int id)
+    /**
+     * Gets a single answer at given position.
+     *
+     * @param i the i
+     * @return the answer
+     */
+    public Answer getAnswer(int i)
     {
-        if (id >= 0 && id < answers.size())
+        if (i >= 0 && i < answers.size())
         {
-            return answers.get(id);
+            return answers.get(i);
         }
         return null;
     }
 
+    /**
+     * Gets answers.
+     *
+     * @return the answers
+     */
     public List<Answer> getAnswers()
     {
         return answers;
     }
 
+    /**
+     * Sets answers.
+     *
+     * @param answers the answers
+     */
     public void setAnswers(List<Answer> answers)
     {
         this.answers = answers;
     }
 
-    public int getAmountOfGoodAnswers()
-    {
-        return amountOfGoodAnswers;
-    }
-
-    public void setAmountOfGoodAnswers(int amountOfGoodAnswers)
-    {
-        this.amountOfGoodAnswers = amountOfGoodAnswers;
-    }
-
+    /**
+     * Gets answer key.
+     *
+     * @return the answer key
+     */
     public List<Boolean> getAnswerKey()
     {
         return answerKey;
     }
 
+    /**
+     * Sets answer key.
+     *
+     * @param answerKey the answer key
+     */
     public void setAnswerKey(List<Boolean> answerKey)
     {
         this.answerKey = answerKey;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public int getId()
     {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(int id)
     {
         this.id = id;
     }
 
-    private void setAnswerKey()
-    {
-        //answerKey = new boolean[answers.size()];
-        amountOfGoodAnswers = 0;
-        for (int i = 0; i < answers.size(); i++)
-        {
-            Answer answer = answers.get(i);
-            //answerKey[i] = answer.isCorrect();
-            amountOfGoodAnswers++;
-        }
-
-        if (amountOfGoodAnswers == 0)
-        {
-            // TODO: Exception
-        }
-    }
     //</editor-fold>
 
     //<editor-fold desc="methods">
 
+    /**
+     * Add answer.
+     *
+     * @param text    the text
+     * @param correct the correct
+     */
     public void addAnswer(String text, boolean correct)
     {
         if (!text.equals(""))
         {
             answers.add(new Answer(text, correct));
-            if(correct)
+            if (correct)
             {
-                amountOfGoodAnswers++;
                 answerKey.add(true);
-            }
-            else
+            } else
             {
                 answerKey.add(false);
             }
@@ -132,7 +163,6 @@ public class Question
     }
 
     //</editor-fold>
-
 
     @Override
     public String toString()

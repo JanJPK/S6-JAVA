@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type TestResult contains answers of students.
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TestResult
@@ -24,103 +27,162 @@ public class TestResult
     @XmlElement
     private float pointsEarned;
     @XmlElement
-    private float grade;
+    private String grade;
 
     //</editor-fold>
 
     //<editor-fold desc="constructor">
 
+    /**
+     * Instantiates a new Test result.
+     *
+     * @param file the file from which answers must be loaded
+     */
     public TestResult(File file)
     {
         answers = new ArrayList<>();
-        loadTest(file);
+        load(file);
     }
 
     //</editor-fold>
 
     //<editor-fold desc="get/set">
 
+    /**
+     * Gets student id.
+     *
+     * @return the student id
+     */
     public int getStudentId()
     {
         return studentId;
     }
 
+    /**
+     * Sets student id.
+     *
+     * @param studentId the student id
+     */
     public void setStudentId(int studentId)
     {
         this.studentId = studentId;
     }
 
+    /**
+     * Gets student name.
+     *
+     * @return the student name
+     */
     public String getStudentName()
     {
         return studentName;
     }
 
+    /**
+     * Sets student name.
+     *
+     * @param studentName the student name
+     */
     public void setStudentName(String studentName)
     {
         this.studentName = studentName;
     }
 
+    /**
+     * Gets answers.
+     *
+     * @return the answers
+     */
     public List<List<Boolean>> getAnswers()
     {
         return answers;
     }
 
-    public float getGrade()
+    /**
+     * Gets grade.
+     *
+     * @return the grade
+     */
+    public String getGrade()
     {
         return grade;
     }
 
-    public void setGrade(float grade)
+    /**
+     * Sets grade.
+     *
+     * @param grade the grade
+     */
+    public void setGrade(String grade)
     {
         this.grade = grade;
     }
 
+    /**
+     * Gets answer.
+     *
+     * @param questionId the question id
+     * @return the answer
+     */
     public List<Boolean> getAnswer(int questionId)
     {
         return answers.get(questionId);
     }
+
+    /**
+     * Gets points earned.
+     *
+     * @return the points earned
+     */
+    public float getPointsEarned()
+    {
+        return pointsEarned;
+    }
+
+    /**
+     * Sets points earned.
+     *
+     * @param pointsEarned the points earned
+     */
+    public void setPointsEarned(float pointsEarned)
+    {
+        this.pointsEarned = pointsEarned;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="methods">
 
-    public void grade(Test test)
-    {
-        answers = new ArrayList<>();
-    }
-
     /**
      * Checks answers with answer key taken from Test object.
      *
-     * @param test object containing answer key.
+     * @param test object containing answer key
      */
-    public void gradeTestResult(Test test)
+    public void grade(Test test)
     {
-        float totalResult = 0;
+        float result = 0;
         for (int i = 0; i < answers.size(); i++)
         {
-            float result = 1;
-            float penalty = 1 / test.getQuestion(i).getAmountOfGoodAnswers();
+            float partialResult = 1;
             List<Boolean> answerKey = test.getQuestion(i).getAnswerKey();
             List<Boolean> answer = answers.get(i);
 
-            if(answerKey.size() != answer.size())
-            {
-                // error
-                return;
-            }
-
             for (int j = 0; j < answerKey.size(); j++)
             {
-                if(answer.get(j) != answerKey.get(j))
+                if (answer.get(j) != answerKey.get(j))
                 {
-                    result -= penalty;
+                    partialResult -= 0.5;
                 }
             }
 
-            if (result > 0)
-                totalResult += result;
+            if(partialResult > 0)
+            {
+                result += partialResult;
+            }
         }
-        pointsEarned = totalResult;
+        pointsEarned = result;
+
+        grade = test.getGrade(pointsEarned);
     }
 
     /**
@@ -129,7 +191,7 @@ public class TestResult
      *
      * @param file location of the .csv file.
      */
-    private void loadTest(File file)
+    private void load(File file)
     {
 
         try
