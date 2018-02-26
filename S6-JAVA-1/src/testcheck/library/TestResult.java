@@ -2,6 +2,7 @@ package testcheck.library;
 
 import javax.xml.bind.annotation.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class TestResult
 
     @XmlElementWrapper(name = "answers")
     @XmlElement(name = "answer")
-    private List<boolean[]> answers;
+    private List<List<Boolean>> answers;
     @XmlElement
     private String studentName;
     @XmlElement
@@ -29,10 +30,10 @@ public class TestResult
 
     //<editor-fold desc="constructor">
 
-    public TestResult(String path)
+    public TestResult(File file)
     {
         answers = new ArrayList<>();
-        loadTest(path);
+        loadTest(file);
     }
 
     //</editor-fold>
@@ -59,7 +60,7 @@ public class TestResult
         this.studentName = studentName;
     }
 
-    public List<boolean[]> getAnswers()
+    public List<List<Boolean>> getAnswers()
     {
         return answers;
     }
@@ -74,13 +75,17 @@ public class TestResult
         this.grade = grade;
     }
 
+    public List<Boolean> getAnswer(int questionId)
+    {
+        return answers.get(questionId);
+    }
     //</editor-fold>
 
     //<editor-fold desc="methods">
 
     public void grade(Test test)
     {
-
+        answers = new ArrayList<>();
     }
 
     /**
@@ -88,20 +93,30 @@ public class TestResult
      *
      * @param test object containing answer key.
      */
-    public void checkAnswers(Test test)
+    public void gradeTestResult(Test test)
     {
         float totalResult = 0;
         for (int i = 0; i < answers.size(); i++)
         {
             float result = 1;
-            Question question = test.getQuestion(i);
-            boolean[] answer = answers.get(i);
-            for (int j = 0; j < answer.length; j++)
-            {
-                if (answer[j] != question.getAnswerKey().get(i))
-                    result -= 1 / question.getAmountOfGoodAnswers();
+            float penalty = 1 / test.getQuestion(i).getAmountOfGoodAnswers();
+            List<Boolean> answerKey = test.getQuestion(i).getAnswerKey();
+            List<Boolean> answer = answers.get(i);
 
+            if(answerKey.size() != answer.size())
+            {
+                // error
+                return;
             }
+
+            for (int j = 0; j < answerKey.size(); j++)
+            {
+                if(answer.get(j) != answerKey.get(j))
+                {
+                    result -= penalty;
+                }
+            }
+
             if (result > 0)
                 totalResult += result;
         }
@@ -112,22 +127,22 @@ public class TestResult
      * Loads answers from .csv.
      * Reads file line by line and converts them to arrays of boolean.
      *
-     * @param path location of the .csv file.
+     * @param file location of the .csv file.
      */
-    private void loadTest(String path)
+    private void loadTest(File file)
     {
 
         try
         {
-            BufferedReader br = new BufferedReader(new FileReader(path));
+            BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
             while ((line = br.readLine()) != null)
             {
                 String[] splitLines = line.split(",");
-                boolean[] answer = new boolean[splitLines.length];
+                List<Boolean> answer = new ArrayList<>();
                 for (int i = 0; i < splitLines.length; i++)
                 {
-                    answer[i] = splitLines[i].equals("1");
+                    answer.add(splitLines[i].equals("1"));
                 }
                 answers.add(answer);
             }
@@ -136,6 +151,19 @@ public class TestResult
         {
             ex.printStackTrace();
         }
+
+        String filename = file.getName();
+        filename = filename.substring(0, filename.length() - 4);
+        String[] splitFilename = filename.split("_");
+        studentId = Integer.parseInt(splitFilename[0]);
+        studentName = splitFilename[1] + " " + splitFilename[2];
+
+    }
+
+    @Override
+    public String toString()
+    {
+        return studentId + " " + studentName;
     }
 
     //</editor-fold>

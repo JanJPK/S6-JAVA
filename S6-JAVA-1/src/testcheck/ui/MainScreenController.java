@@ -3,18 +3,18 @@ package testcheck.ui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import testcheck.library.Question;
-import testcheck.library.Test;
+import testcheck.library.*;
 
 import javax.xml.bind.JAXB;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,15 +30,21 @@ public class MainScreenController
     public static final ObservableList testResults = FXCollections.observableArrayList();
     public GridPane mainGrid;
     public ListView questionListView;
-    public FlowPane questionAnswersFlowPane;
-    public Button buttonSaveQuestionAnswers;
+    public Button saveQuestionAnswersButton;
+    public Button saveTestResultAnswersSaveButton;
     public GridPane resultsGrid;
     public GridPane questionsGrid;
     public GridPane gradingGrid;
+    public ListView testResultsListView;
+    public VBox testResultAnswersVBox;
+    public VBox questionAnswersVBox;
+    public VBox gradingVBox;
+    public Label testNameGradingLabel;
 
     //</editor-fold>
 
 
+    private TestStatistics testStatistics;
     private Test test;
 
     //</editor-fold>
@@ -58,6 +64,9 @@ public class MainScreenController
         if (file.getPath().endsWith("xml"))
         {
             unmarshalTest(file);
+            loadQuestionListView();
+            populateGradingVBox();
+            showDialogInformation("Test has been loaded.","");
         } else
         {
             showDialogError("Incorrect file extension!",
@@ -93,11 +102,17 @@ public class MainScreenController
                 files.add(file);
         }
 
-        if(files.size() > 0)
+        if (files.size() > 0)
         {
+            testStatistics = new TestStatistics();
+            testStatistics.setTest(test);
+            testStatistics.loadTestResults(files);
+            testStatistics.gradeTestResults();
 
-        }
-        else
+            testResults.addAll(testStatistics.getTestResults());
+            testResultsListView.getItems().clear();
+            testResultsListView.setItems(testResults);
+        } else
         {
             showDialogError("No files found!",
                     "Directory does not contain files in required format.");
@@ -106,7 +121,30 @@ public class MainScreenController
 
     public void loadTestResultAnswers()
     {
+        int selectedIndex = testResultsListView.getSelectionModel().getSelectedIndex();
+        TestResult testResult = testStatistics.getTestResult(selectedIndex);
+        List<HBox> hBoxes = new ArrayList<>();
 
+        for (int i = 0; i < testResult.getAnswers().size(); i++)
+        {
+            List<Boolean> answer = testResult.getAnswer(i);
+            HBox hBox = new HBox();
+            hBox.setSpacing(10);
+            String labelText = String.format("%-15s", "Answer " + (i + 1));
+            hBox.getChildren().add(new Label(labelText));
+            for (int j = 0; j < answer.size(); j++)
+            {
+                CheckBox checkBox = new CheckBox();
+                checkBox.setSelected(answer.get(j));
+                checkBox.setDisable(true);
+                hBox.getChildren().add(checkBox);
+            }
+            hBoxes.add(hBox);
+
+        }
+        testResultAnswersVBox.getChildren().clear();
+        testResultAnswersVBox.getChildren().addAll(hBoxes);
+        //initializeTestResultAnswersSaveButton();
     }
 
     public void createTestResult()
@@ -114,26 +152,118 @@ public class MainScreenController
 
     }
 
+    public void initializeTestResultAnswersSaveButton()
+    {
+        if (saveTestResultAnswersSaveButton == null)
+        {
+            saveTestResultAnswersSaveButton = new Button();
+            saveTestResultAnswersSaveButton.setText("Save changes");
+            saveTestResultAnswersSaveButton.setOnAction(event -> saveTestResultAnswers());
+        }
+        testResultAnswersVBox.getChildren().add(saveTestResultAnswersSaveButton);
+    }
+
+    public void saveTestResultAnswers()
+    {
+
+    }
+    
+    public void checkTestResults()
+    {
+        
+    }
+
     //</editor-fold>
 
+    //<editor-fold desc="statistics-methods">
+
+
+    //</editor-fold>
+
+    //<editor-fold desc="questions-methods">
+
+    public void loadQuestionAnswers()
+    {
+        int selectedIndex = questionListView.getSelectionModel().getSelectedIndex();
+        Question question = test.getQuestion(selectedIndex);
+        List<HBox> hBoxes = new ArrayList<>();
+
+        for (int i = 0; i < question.getAnswers().size(); i++)
+        {
+            Answer answer = question.getAnswer(i);
+            HBox hBox = new HBox();
+            hBox.setSpacing(10);
+            hBox.getChildren().add(new TextField(answer.getText()));
+            CheckBox checkBox = new CheckBox();
+            checkBox.setSelected(answer.isCorrect());
+            hBox.getChildren().add(checkBox);
+            hBoxes.add(hBox);
+        }
+        questionAnswersVBox.getChildren().clear();
+        questionAnswersVBox.getChildren().addAll(hBoxes);
+        //questionAnswersVBox.getChildren().add(saveQuestionAnswersButton);
+    }
+
+    public void loadQuestionListView()
+    {
+        questions.addAll(test.getQuestions());
+        questionListView.getItems().clear();
+        questionListView.setItems(questions);
+    }
+
+
+    //</editor-fold>
+    
+    //<editor-fold desc="grading-methods">
+
+    public void populateGradingVBox()
+    {
+        if(gradingVBox.getChildren().isEmpty() && test != null)
+        {
+            testNameGradingLabel.setText(test.getName());
+            String[] grades = new String[] {"3.0", "3.5", "4.0", "4.5", "5.0"};
+            int[] pointThresholds = test.getPointThresholds();
+            for(int i = 0; i < grades.length;i++)
+            {
+                Label label = new Label("   " + grades[i]);
+                TextField textField = new TextField();
+                textField.setText(String.valueOf(pointThresholds[i]));
+                textField.setMaxWidth(50);
+                HBox hBox = new HBox();
+                hBox.setSpacing(15);
+                hBox.getChildren().addAll(label, textField);
+                label = new Label("/ " + test.getPointsMax());
+                hBox.getChildren().add(label);
+                gradingVBox.getChildren().add(hBox);
+            }
+        }
+    }
+
+    //</editor-fold>
+    
     //<editor-fold desc="methods">
 
     private void initializeSaveQuestionAnswersButton()
     {
-        if(buttonSaveQuestionAnswers == null)
+        if (saveQuestionAnswersButton == null)
         {
-            buttonSaveQuestionAnswers = new Button();
-            buttonSaveQuestionAnswers.setText("Save changes");
-            buttonSaveQuestionAnswers.setOnAction(event -> loadQuestionAnswers());
+            saveQuestionAnswersButton = new Button();
+            saveQuestionAnswersButton.setText("Save changes");
+            saveQuestionAnswersButton.setOnAction(event -> loadQuestionAnswers());
         }
     }
 
-
     public void createTest()
+    {
+
+    }
+
+    public void createFakeTest()
     {
         initializeSaveQuestionAnswersButton();
         Random rng = new Random();
         test = new Test();
+        test.setName("Example exam 2018");
         int questionAmount = 15;
         for (int i = 0; i < questionAmount; i++)
         {
@@ -141,35 +271,20 @@ public class MainScreenController
             question.setText("Question " + i);
             question.setId(i + 1);
             question.addAnswer("Answer A-" + i, rng.nextBoolean());
-            question.addAnswer("Answer B-" + i, rng.nextBoolean());
+            question.addAnswer("Answer B-" + i, true);
             question.addAnswer("Answer C-" + i, rng.nextBoolean());
             test.addQuestion(question);
         }
-        loadQuestionListView(test);
+        test.setPointThreshold(4, 14);
+        test.setPointThreshold(3, 12);
+        test.setPointThreshold(2, 10);
+        test.setPointThreshold(1, 8);
+        test.setPointThreshold(0, 6);
+
+        //loadQuestionListView(test);
+        marshalTest(test);
     }
 
-    public void loadQuestionListView(Test test)
-    {
-        questions.addAll(test.getQuestions());
-        questionListView.getItems().clear();
-        questionListView.setItems(questions);
-    }
-
-    public void loadQuestionAnswers()
-    {
-        int selectedIndex = questionListView.getSelectionModel().getSelectedIndex();
-        //int selectedIndex = 5;
-        Question question = test.getQuestion(selectedIndex);
-        List<TextField> textFields = new ArrayList<>();
-        for (int i = 0; i < question.getAnswers().size(); i++)
-        {
-            textFields.add(new TextField());
-            textFields.get(i).setText(question.getAnswer(i).getText());
-        }
-        questionAnswersFlowPane.getChildren().clear();
-        questionAnswersFlowPane.getChildren().addAll(textFields);
-        questionAnswersFlowPane.getChildren().add(buttonSaveQuestionAnswers);
-    }
 
     public void testToXML(Test test)
     {
@@ -193,6 +308,47 @@ public class MainScreenController
 
     }
 
+
+
+    //</editor-fold>
+
+    //<editor-fold desc="marshal-methods">
+
+    private void marshalTest(Test test)
+    {
+        StringWriter sw = new StringWriter();
+        JAXB.marshal(test, sw);
+        String testXML = sw.toString();
+
+        try
+        {
+            PrintWriter out = new PrintWriter("test.xml");
+            out.print(testXML);
+            out.close();
+        } catch (FileNotFoundException ex)
+        {
+            showDialogError("Write error", "Incorrect filename.");
+        }
+    }
+
+    private void unmarshalTest(File file)
+    {
+        try
+        {
+            JAXBContext context = JAXBContext.newInstance(Test.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            test = (Test) unmarshaller.unmarshal(file);
+        } catch (JAXBException ex)
+        {
+            showDialogError("Error loading .xml file.", "Is .xml describing a test?");
+        }
+
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="dialog-methods">
+
     private void showDialogError(String header, String content)
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -202,20 +358,15 @@ public class MainScreenController
         alert.showAndWait();
     }
 
-    //</editor-fold>
-
-    //<editor-fold desc="marshal-methods">
-
-    private void marshalTest(Test test)
+    private void showDialogInformation(String header, String content)
     {
-
-    }
-
-    private void unmarshalTest(File file)
-    {
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     //</editor-fold>
-
+    
 }

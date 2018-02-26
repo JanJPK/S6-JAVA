@@ -21,6 +21,11 @@ public class TestStatistics
         this.test = test;
     }
 
+    public TestStatistics()
+    {
+
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="get/set">
@@ -46,26 +51,30 @@ public class TestStatistics
         this.testResults = testResults;
     }
 
+    public TestResult getTestResult(int i)
+    {
+        return testResults.get(i);
+    }
     //</editor-fold>
 
     //<editor-fold desc="methods">
 
-    public void loadTestResults(File[] files)
+    public void loadTestResults(List<File> files)
     {
         testResults = new ArrayList<>();
         for(File file : files)
         {
-            testResults.add(new TestResult(file.getPath()));
+            testResults.add(new TestResult(file));
         }
     }
 
-    public void checkTests()
+    public void gradeTestResults()
     {
         if(testResults.size() > 0 && test != null)
         {
             for(TestResult testResult : testResults)
             {
-                testResult.checkAnswers(test);
+                testResult.gradeTestResult(test);
             }
         }
 

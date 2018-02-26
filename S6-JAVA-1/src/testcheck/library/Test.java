@@ -17,6 +17,8 @@ public class Test
     private int pointsMax;
     @XmlElement
     private String name;
+    @XmlElement
+    private int[] pointThresholds;
 
     //</editor-fold>
 
@@ -24,6 +26,7 @@ public class Test
     public Test()
     {
         questions = new ArrayList<>();
+        pointThresholds = new int[5];
     }
 
     //</editor-fold>
@@ -75,6 +78,43 @@ public class Test
     public void setPointsMax(int pointsMax)
     {
         this.pointsMax = pointsMax;
+    }
+
+    public int[] getPointThresholds()
+    {
+        return pointThresholds;
+    }
+
+    public void setPointThresholds(int[] pointThresholds)
+    {
+        this.pointThresholds = pointThresholds;
+    }
+
+    public int getPointThreshold(int i)
+    {
+        if (i >= 0 && i < pointThresholds.length)
+        {
+            return pointThresholds[i];
+        }
+        return 0;
+    }
+
+    public void setPointThreshold(int i, int value)
+    {
+        if (i >= 0 && i < pointThresholds.length)
+        {
+            if (i == pointThresholds.length - 1)
+            {
+                pointThresholds[i] = value;
+            } else
+            {
+                if (value < pointThresholds[i + 1])
+                {
+                    pointThresholds[i] = value;
+                }
+            }
+
+        }
     }
 
     //</editor-fold>
