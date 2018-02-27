@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="S6-JAVA-1-LIB:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/S6_JAVA_1_LIB_jar</output-path>
+    <root id="archive" name="S6-JAVA-1-LIB.jar">
+      <element id="module-output" name="S6-JAVA-1-LIB" />
+    </root>
+  </artifact>
+</component>

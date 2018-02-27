@@ -1,0 +1,23 @@
+    //<editor-fold desc="variables">
+
+
+
+    //</editor-fold>
+
+    //<editor-fold desc="constructor">
+
+
+
+    //</editor-fold>
+
+    //<editor-fold desc="get/set">
+
+
+
+    //</editor-fold>
+
+    //<editor-fold desc="methods">
+
+
+
+    //</editor-fold>

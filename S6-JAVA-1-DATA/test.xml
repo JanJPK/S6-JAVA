@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<test>
+    <grades>3.0</grades>
+    <grades>3.5</grades>
+    <grades>4.0</grades>
+    <grades>4.5</grades>
+    <grades>5.0</grades>
+    <questions>
+        <question>
+            <id>1</id>
+            <questionText>testcheck.lib.Question 0</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-0</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-0</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-0</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>3</amountOfGoodAnswers>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>2</id>
+            <questionText>testcheck.lib.Question 1</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-1</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-1</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-1</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>3</amountOfGoodAnswers>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>3</id>
+            <questionText>testcheck.lib.Question 2</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-2</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-2</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-2</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>1</amountOfGoodAnswers>
+            <answerKey>false</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>false</answerKey>
+        </question>
+        <question>
+            <id>4</id>
+            <questionText>testcheck.lib.Question 3</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-3</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-3</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-3</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>1</amountOfGoodAnswers>
+            <answerKey>false</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>false</answerKey>
+        </question>
+        <question>
+            <id>5</id>
+            <questionText>testcheck.lib.Question 4</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-4</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-4</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-4</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>3</amountOfGoodAnswers>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>6</id>
+            <questionText>testcheck.lib.Question 5</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-5</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-5</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-5</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>3</amountOfGoodAnswers>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>7</id>
+            <questionText>testcheck.lib.Question 6</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-6</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-6</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-6</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>1</amountOfGoodAnswers>
+            <answerKey>false</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>false</answerKey>
+        </question>
+        <question>
+            <id>8</id>
+            <questionText>testcheck.lib.Question 7</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-7</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-7</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-7</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>2</amountOfGoodAnswers>
+            <answerKey>false</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>9</id>
+            <questionText>testcheck.lib.Question 8</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-8</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-8</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-8</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>2</amountOfGoodAnswers>
+            <answerKey>false</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>10</id>
+            <questionText>testcheck.lib.Question 9</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-9</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-9</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-9</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>2</amountOfGoodAnswers>
+            <answerKey>false</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>11</id>
+            <questionText>testcheck.lib.Question 10</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-10</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-10</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-10</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>3</amountOfGoodAnswers>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>12</id>
+            <questionText>testcheck.lib.Question 11</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-11</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-11</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-11</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>1</amountOfGoodAnswers>
+            <answerKey>false</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>false</answerKey>
+        </question>
+        <question>
+            <id>13</id>
+            <questionText>testcheck.lib.Question 12</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-12</answerText>
+                    <answerCorrectness>false</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-12</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-12</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>2</amountOfGoodAnswers>
+            <answerKey>false</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>14</id>
+            <questionText>testcheck.lib.Question 13</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-13</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-13</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-13</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>3</amountOfGoodAnswers>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+        <question>
+            <id>15</id>
+            <questionText>testcheck.lib.Question 14</questionText>
+            <answers>
+                <answer>
+                    <answerText>testcheck.lib.Answer A-14</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer B-14</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+                <answer>
+                    <answerText>testcheck.lib.Answer C-14</answerText>
+                    <answerCorrectness>true</answerCorrectness>
+                </answer>
+            </answers>
+            <amountOfGoodAnswers>3</amountOfGoodAnswers>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+            <answerKey>true</answerKey>
+        </question>
+    </questions>
+    <pointsMax>15</pointsMax>
+    <name>Example exam 2018</name>
+    <pointThresholds>6</pointThresholds>
+    <pointThresholds>8</pointThresholds>
+    <pointThresholds>10</pointThresholds>
+    <pointThresholds>12</pointThresholds>
+    <pointThresholds>14</pointThresholds>
+</test>
