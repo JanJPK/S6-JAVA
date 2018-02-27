@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import testcheck.library.*;
+import testcheck.lib.*;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
@@ -48,7 +48,7 @@ public class MainScreenController
      */
     public GridPane mainGrid;
     /**
-     * The Question list view.
+     * The testcheck.lib.Question list view.
      */
     public ListView questionListView;
     /**
@@ -60,15 +60,15 @@ public class MainScreenController
      */
     public GridPane gradingGrid;
     /**
-     * The Test results list view.
+     * The testcheck.lib.Test results list view.
      */
     public ListView testResultsListView;
     /**
-     * The Test result answers v box.
+     * The testcheck.lib.Test result answers v box.
      */
     public VBox testResultAnswersVBox;
     /**
-     * The Question answers v box.
+     * The testcheck.lib.Question answers v box.
      */
     public VBox questionAnswersVBox;
     /**
@@ -76,7 +76,7 @@ public class MainScreenController
      */
     public VBox gradingVBox;
     /**
-     * The Test name grading label.
+     * The testcheck.lib.Test name grading label.
      */
     public Label testNameGradingLabel;
     /**
@@ -99,7 +99,7 @@ public class MainScreenController
 
     /**
      * Called from start tab.
-     * Opens a FileChooser dialog so user can load an .xml file with marshalized Test object.
+     * Opens a FileChooser dialog so user can load an .xml file with marshalized testcheck.lib.Test object.
      */
     public void loadTest()
     {
@@ -112,7 +112,7 @@ public class MainScreenController
             unmarshalTest(file);
             loadQuestionListView();
             loadGradingVBox();
-            showDialogInformation("Test has been loaded.", "");
+            showDialogInformation("testcheck.lib.Test has been loaded.", "");
         } else
         {
             showDialogError("Incorrect file extension!",
@@ -132,11 +132,11 @@ public class MainScreenController
         for (int i = 0; i < questionAmount; i++)
         {
             Question question = new Question();
-            question.setText("Question " + i);
+            question.setText("testcheck.lib.Question " + i);
             question.setId(i + 1);
-            question.addAnswer("Answer A-" + i, rng.nextBoolean());
-            question.addAnswer("Answer B-" + i, true);
-            question.addAnswer("Answer C-" + i, rng.nextBoolean());
+            question.addAnswer("testcheck.lib.Answer A-" + i, rng.nextBoolean());
+            question.addAnswer("testcheck.lib.Answer B-" + i, true);
+            question.addAnswer("testcheck.lib.Answer C-" + i, rng.nextBoolean());
             test.addQuestion(question);
         }
         test.setPointThreshold(4, 14);
@@ -207,7 +207,7 @@ public class MainScreenController
             List<Boolean> answer = testResult.getAnswer(i);
             HBox hBox = new HBox();
             hBox.setSpacing(10);
-            String labelText = String.format("%-15s", "Answer " + (i + 1));
+            String labelText = String.format("%-15s", "testcheck.lib.Answer " + (i + 1));
             hBox.getChildren().add(new Label(labelText));
             for (int j = 0; j < answer.size(); j++)
             {
@@ -374,7 +374,7 @@ public class MainScreenController
     //<editor-fold desc="marshal-methods">
 
     /**
-     * Marshals the Test object into .xml file with given filename.
+     * Marshals the testcheck.lib.Test object into .xml file with given filename.
      *
      * @param test     object to marshal
      * @param filename filename of .xml file
@@ -402,7 +402,7 @@ public class MainScreenController
     }
 
     /**
-     * Unmarshals the given file into Test object.
+     * Unmarshals the given file into testcheck.lib.Test object.
      *
      * @param file file containing path to proper .xml
      */
