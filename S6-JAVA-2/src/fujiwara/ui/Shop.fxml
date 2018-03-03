@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainGrid" alignment="center" hgap="20" prefHeight="800.0"
+          prefWidth="1000.0"
+          vgap="20" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="fujiwara.ui.ShopController">
+    <!-- Shop name -->
+    <StackPane fx:id="bannerStackPane" GridPane.rowIndex="0">
+        <ImageView fitWidth="${bannerStackPane.width}" fitHeight="${bannerStackPane.height}" preserveRatio="true">
+            <Image url="@/shop_logo_black.png"/>
+        </ImageView>
+    </StackPane>
+
+
+    <!-- Main window content -->
+    <GridPane hgap="20" vgap="20" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+        <!-- List view of loaded items -->
+        <VBox spacing="10" GridPane.columnIndex="0">
+            <HBox spacing="10">
+                <Button text="US" onAction="#selectLocaleUS"/>
+                <Button text="PL" onAction="#selectLocalePL"/>
+                <Button fx:id="selectDirectoryButton" text="Directory"/>
+                <Button fx:id="newShopItemButton" text="New"/>
+            </HBox>
+            <ListView fx:id="shopItemListView" VBox.vgrow="ALWAYS">
+                <VBox.margin>
+                    <Insets bottom="50.0"/>
+                </VBox.margin>
+            </ListView>
+        </VBox>
+        <!-- Detail view of selected item -->
+        <VBox spacing="10" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
+            <Label text="Header"/>
+            <ImageView>
+
+            </ImageView>
+            <GridPane vgap="10" hgap="10">
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="0"
+                       fx:id="dateLabel" text="Quantity"/>
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="0"
+                           fx:id="dateTextField"/>
+
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="1"
+                       fx:id="priceLabel" text="Price"/>
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"
+                           fx:id="priceTextField"/>
+            </GridPane>
+            <HBox spacing="10">
+                <Button fx:id="saveShopItemButton" text="Save"/>
+                <Button fx:id="removeShopItemButton" text="Remove"/>
+                <Button fx:id="selectImageButton" text="Select image"/>
+            </HBox>
+        </VBox>
+        <rowConstraints>
+            <RowConstraints vgrow="ALWAYS"/>
+        </rowConstraints>
+        <columnConstraints>
+            <ColumnConstraints percentWidth="30"/>
+            <ColumnConstraints percentWidth="70"/>
+        </columnConstraints>
+    </GridPane>
+    <rowConstraints>
+        <RowConstraints percentHeight="20"/>
+        <RowConstraints percentHeight="80"/>
+    </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+    </columnConstraints>
+</GridPane>
