@@ -22,17 +22,21 @@
         <!-- List view of loaded items -->
         <VBox spacing="10" GridPane.columnIndex="0">
             <HBox spacing="10">
-                <Button onAction="#createTestData" text="DB"/>
                 <Button onAction="#setLocaleUS" text="US"/>
                 <Button onAction="#setLocalePL" text="PL"/>
                 <Button fx:id="selectDirectoryButton" onAction="#selectDirectory"/>
                 <Button fx:id="newShopItemButton" onAction="#createShopItem"/>
             </HBox>
             <ListView fx:id="shopItemListView" VBox.vgrow="ALWAYS" onMouseClicked="#openDetailView">
+
+            </ListView>
+            <HBox>
+                <Button text="ERR" onAction="#testErrorDialog"/>
+                <Button onAction="#createTestData" text="DB"/>
                 <VBox.margin>
                     <Insets bottom="50.0"/>
                 </VBox.margin>
-            </ListView>
+            </HBox>
         </VBox>
         <!-- Detail view of selected item -->
         <VBox alignment="TOP_CENTER" maxWidth="600" spacing="10" GridPane.columnIndex="1"

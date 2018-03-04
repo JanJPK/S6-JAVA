@@ -13,10 +13,8 @@ import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -120,6 +118,7 @@ public class ShopController
             showDialogError("parse_header", "parse_name");
             return;
         }
+        selectedItem.setName(nameTextField.getText());
 
         if (!shopItems.contains(selectedItem))
         {
@@ -127,12 +126,36 @@ public class ShopController
         }
 
         marshal(selectedItem, selectedItem.getName());
-
+        shopItems.remove(selectedItem);
+        shopItems.add(selectedItem);
+        shopItemListView.setItems(shopItems);
+        initializeDetailView();
     }
 
     public void removeShopItem()
     {
+        File file = new File(directory + "\\" + selectedItem.getName() + ".xml");
+        if (file.exists())
+        {
+            try
+            {
+                Files.delete(file.toPath());
+            } catch (IOException ignored)
+            {
 
+            }
+
+        }
+        shopItems.remove(selectedItem);
+        if(shopItems.isEmpty())
+        {
+            createShopItem();
+        }
+        else
+        {
+            selectedItem = shopItems.get(0);
+            initializeDetailView();
+        }
     }
 
     //</editor-fold>
@@ -148,8 +171,9 @@ public class ShopController
 
     public void openDetailView()
     {
-        int index = shopItemListView.getSelectionModel().getSelectedIndex();
-        selectedItem = shopItems.get(index);
+        //int index = shopItemListView.getSelectionModel().getSelectedIndex();
+        //selectedItem = shopItems.get(index);
+        selectedItem = (ShopItem) shopItemListView.getSelectionModel().getSelectedItem();
         initializeDetailView();
     }
 
@@ -158,6 +182,12 @@ public class ShopController
         DirectoryChooser dc = new DirectoryChooser();
         dc.setTitle("Choose the directory containing objects to load");
         directory = dc.showDialog(mainGrid.getScene().getWindow());
+        if (directory == null)
+        {
+            showDialogError("load_header", "load_null");
+            return;
+        }
+
         File[] allFiles = directory.listFiles();
         List<File> files = new ArrayList<File>();
         for (File file : allFiles)
@@ -178,8 +208,8 @@ public class ShopController
             initializeListView(items);
         } else
         {
-            showDialogError("No files found!",
-                    "Directory does not contain files in the required format.");
+            showDialogError("load_header",
+                    "load_empty");
         }
     }
 
@@ -201,8 +231,14 @@ public class ShopController
 
         try
         {
-            //PrintWriter out = new PrintWriter(directory.getAbsolutePath() + filename + ".xml");
-            PrintWriter out = new PrintWriter(filename + ".xml");
+            PrintWriter out;
+            if (directory == null)
+            {
+                out = new PrintWriter(filename + ".xml");
+            } else
+            {
+                out = new PrintWriter(directory.getAbsolutePath() + "\\" + filename + ".xml");
+            }
             out.print(testXML);
             out.close();
         } catch (FileNotFoundException ex)
@@ -241,8 +277,8 @@ public class ShopController
         ResourceBundle bundle = ResourceBundle.getBundle("fujiwara.internationalization.Errors", currentLocale);
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setHeaderText(bundle.getString("header"));
-        alert.setContentText(bundle.getString("content"));
+        alert.setHeaderText(bundle.getString(header));
+        alert.setContentText(bundle.getString(content));
         alert.showAndWait();
     }
 
@@ -309,6 +345,13 @@ public class ShopController
 
         }
 
+    }
+
+    public void testErrorDialog()
+    {
+        showDialogError("parse_header", "parse_price");
+        showDialogError("parse_header", "parse_date");
+        showDialogError("parse_header", "parse_name");
     }
 
     //</editor-fold>
