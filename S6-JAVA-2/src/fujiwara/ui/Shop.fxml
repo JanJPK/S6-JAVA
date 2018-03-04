@@ -6,58 +6,62 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <GridPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainGrid" alignment="center" hgap="20" prefHeight="800.0"
-          prefWidth="1000.0"
-          vgap="20" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="fujiwara.ui.ShopController">
+          prefWidth="1000.0" vgap="20" xmlns="http://javafx.com/javafx/8.0.121"
+          fx:controller="fujiwara.ui.ShopController">
     <!-- Shop name -->
     <StackPane fx:id="bannerStackPane" GridPane.rowIndex="0">
-        <ImageView fitWidth="${bannerStackPane.width}" fitHeight="${bannerStackPane.height}" preserveRatio="true">
+        <ImageView fitHeight="${bannerStackPane.height}" fitWidth="${bannerStackPane.width}" preserveRatio="true">
             <Image url="@/shop_logo_black.png"/>
         </ImageView>
     </StackPane>
 
 
     <!-- Main window content -->
-    <GridPane hgap="20" vgap="20" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+    <GridPane alignment="CENTER" hgap="20" vgap="20" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+              GridPane.valignment="CENTER" maxWidth="1000">
         <!-- List view of loaded items -->
         <VBox spacing="10" GridPane.columnIndex="0">
             <HBox spacing="10">
-                <Button text="US" onAction="#selectLocaleUS"/>
-                <Button text="PL" onAction="#selectLocalePL"/>
-                <Button fx:id="selectDirectoryButton" text="Directory"/>
-                <Button fx:id="newShopItemButton" text="New"/>
+                <Button onAction="#createTestData" text="DB"/>
+                <Button onAction="#setLocaleUS" text="US"/>
+                <Button onAction="#setLocalePL" text="PL"/>
+                <Button fx:id="selectDirectoryButton" onAction="#selectDirectory"/>
+                <Button fx:id="newShopItemButton" onAction="#createShopItem"/>
             </HBox>
-            <ListView fx:id="shopItemListView" VBox.vgrow="ALWAYS">
+            <ListView fx:id="shopItemListView" VBox.vgrow="ALWAYS" onMouseClicked="#openDetailView">
                 <VBox.margin>
                     <Insets bottom="50.0"/>
                 </VBox.margin>
             </ListView>
         </VBox>
         <!-- Detail view of selected item -->
-        <VBox spacing="10" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
-            <Label text="Header"/>
-            <ImageView>
-
+        <VBox alignment="TOP_CENTER" maxWidth="600" spacing="10" GridPane.columnIndex="1"
+              GridPane.vgrow="ALWAYS">
+            <TextField fx:id="nameTextField"/>
+            <ImageView fx:id="detailViewImageView" fitHeight="350" preserveRatio="true">
+                <Image fx:id="detailViewImage" url="@/shop_default_image.png"/>
             </ImageView>
-            <GridPane vgap="10" hgap="10">
-                <Label GridPane.columnIndex="0" GridPane.rowIndex="0"
-                       fx:id="dateLabel" text="Quantity"/>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="0"
-                           fx:id="dateTextField"/>
+            <GridPane alignment="TOP_CENTER" hgap="10" vgap="10">
+                <Label fx:id="dateLabel" text="Quantity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="dateTextField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                <Label GridPane.columnIndex="0" GridPane.rowIndex="1"
-                       fx:id="priceLabel" text="Price"/>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"
-                           fx:id="priceTextField"/>
+                <Label fx:id="priceLabel" text="Price" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="priceTextField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <columnConstraints>
+                    <ColumnConstraints/>
+                    <ColumnConstraints/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                </rowConstraints>
             </GridPane>
-            <HBox spacing="10">
-                <Button fx:id="saveShopItemButton" text="Save"/>
-                <Button fx:id="removeShopItemButton" text="Remove"/>
-                <Button fx:id="selectImageButton" text="Select image"/>
+            <HBox alignment="TOP_CENTER" spacing="10">
+                <Button fx:id="saveShopItemButton" onAction="#saveShopItem"/>
+                <Button fx:id="removeShopItemButton" onAction="#removeShopItem"/>
+                <Button fx:id="selectImageButton" onAction="#selectShopItemImage"/>
             </HBox>
         </VBox>
-        <rowConstraints>
-            <RowConstraints vgrow="ALWAYS"/>
-        </rowConstraints>
         <columnConstraints>
             <ColumnConstraints percentWidth="30"/>
             <ColumnConstraints percentWidth="70"/>
@@ -68,6 +72,6 @@
         <RowConstraints percentHeight="80"/>
     </rowConstraints>
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
     </columnConstraints>
 </GridPane>

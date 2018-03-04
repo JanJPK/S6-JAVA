@@ -1,16 +1,25 @@
 package fujiwara.model;
 
-import java.io.File;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ShopItem
 {
     //<editor-fold desc="variables">
 
-    private File imagePath;
+    @XmlElement
+    private String imagePath;
+    @XmlElement
     private Date dateOfLastShipment;
+    @XmlElement
     private String name;
-    private float price;
+    @XmlElement
+    private long price;
 
     //</editor-fold>
 
@@ -21,7 +30,7 @@ public class ShopItem
 
     }
 
-    public ShopItem(File imagePath)
+    public ShopItem(String imagePath)
     {
         this.imagePath = imagePath;
     }
@@ -30,12 +39,12 @@ public class ShopItem
 
     //<editor-fold desc="get/set">
 
-    public float getPrice()
+    public long getPrice()
     {
         return price;
     }
 
-    public void setPrice(float price)
+    public void setPrice(long price)
     {
         this.price = price;
     }
@@ -60,12 +69,12 @@ public class ShopItem
         this.dateOfLastShipment = dateOfLastShipment;
     }
 
-    public File getImagePath()
+    public String getImagePath()
     {
         return imagePath;
     }
 
-    public void setImagePath(File imagePath)
+    public void setImagePath(String imagePath)
     {
         this.imagePath = imagePath;
     }
@@ -79,7 +88,6 @@ public class ShopItem
     {
         return name;
     }
-
 
     //</editor-fold>
 }

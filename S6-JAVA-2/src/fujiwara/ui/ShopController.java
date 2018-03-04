@@ -4,6 +4,8 @@ import fujiwara.model.ShopItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 
@@ -16,22 +18,21 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ShopController
 {
     //<editor-fold desc="variables">
 
-    //<editor-fold desc="variables-ui">
-
     private static final ObservableList<ShopItem> shopItems = FXCollections.observableArrayList();
     private static Locale usLocale = new Locale("en", "US");
     private static Locale plLocale = new Locale("pl", "PL");
+    private static Locale currentLocale;
+    private static DateFormat dateFormatter;
+    private static NumberFormat priceFormatter;
     public GridPane mainGrid;
     public ListView shopItemListView;
     public Button newShopItemButton;
@@ -43,39 +44,102 @@ public class ShopController
     public Button selectImageButton;
     public Button removeShopItemButton;
     public Button saveShopItemButton;
+    public Image detailViewImage;
+    public ImageView detailViewImageView;
+    public TextField nameTextField;
+    private File directory;
+    private ShopItem selectedItem;
 
     //</editor-fold>
 
+    //<editor-fold desc="initialize">
+
+    public void initialize()
+    {
+        setLocaleUS();
+    }
 
     //</editor-fold>
 
     //<editor-fold desc="detail-view-methods">
 
-    public void initializeDetailView()
+    private void initializeDetailView()
+    {
+        dateTextField.setText(dateFormatter.format(selectedItem.getDateOfLastShipment()));
+        priceTextField.setText(priceFormatter.format(selectedItem.getPrice()));
+        nameTextField.setText(selectedItem.getName());
+
+        if (selectedItem.getImagePath() == null)
+        {
+            detailViewImageView.setImage(new Image(Main.class.getResourceAsStream("/shop_default_image.png")));
+        } else
+        {
+            String path = "file:" + selectedItem.getImagePath();
+            detailViewImage = new Image(path);
+            detailViewImageView.setImage(detailViewImage);
+        }
+
+    }
+
+    public void createShopItem()
+    {
+        selectedItem = new ShopItem();
+        selectedItem.setDateOfLastShipment(new Date());
+        selectedItem.setPrice(0);
+        selectedItem.setName("Product");
+        initializeDetailView();
+    }
+
+    public void selectShopItemImage()
     {
 
     }
 
-    public void createDetailView()
+    public void saveShopItem()
     {
+        try
+        {
+            selectedItem.setDateOfLastShipment(dateFormatter.parse(dateTextField.getText()));
+        } catch (ParseException ex)
+        {
+            showDialogError("parse_header", "parse_date");
+            return;
+        }
+
+        try
+        {
+            selectedItem.setPrice((long) priceFormatter.parse(priceTextField.getText()));
+        } catch (ParseException ex)
+        {
+            showDialogError("parse_header", "parse_price");
+            return;
+        }
+
+        if (nameTextField.getText().equals(""))
+        {
+            showDialogError("parse_header", "parse_name");
+            return;
+        }
+
+        if (!shopItems.contains(selectedItem))
+        {
+            shopItems.add(selectedItem);
+        }
+
+        marshal(selectedItem, selectedItem.getName());
 
     }
 
-    public void saveDetailView()
-    {
-
-    }
-
-    public void deleteDetailView()
+    public void removeShopItem()
     {
 
     }
 
     //</editor-fold>
 
-    //<editor-fold desc="list-methods">
+    //<editor-fold desc="list-view-methods">
 
-    public void initializeListView(List<ShopItem> items)
+    private void initializeListView(List<ShopItem> items)
     {
         shopItems.addAll(items);
         //shopItemListView.getItems().clear();
@@ -84,14 +148,16 @@ public class ShopController
 
     public void openDetailView()
     {
-
+        int index = shopItemListView.getSelectionModel().getSelectedIndex();
+        selectedItem = shopItems.get(index);
+        initializeDetailView();
     }
 
     public void selectDirectory()
     {
         DirectoryChooser dc = new DirectoryChooser();
         dc.setTitle("Choose the directory containing objects to load");
-        File directory = dc.showDialog(mainGrid.getScene().getWindow());
+        directory = dc.showDialog(mainGrid.getScene().getWindow());
         File[] allFiles = directory.listFiles();
         List<File> files = new ArrayList<File>();
         for (File file : allFiles)
@@ -135,6 +201,7 @@ public class ShopController
 
         try
         {
+            //PrintWriter out = new PrintWriter(directory.getAbsolutePath() + filename + ".xml");
             PrintWriter out = new PrintWriter(filename + ".xml");
             out.print(testXML);
             out.close();
@@ -171,10 +238,11 @@ public class ShopController
      */
     private void showDialogError(String header, String content)
     {
+        ResourceBundle bundle = ResourceBundle.getBundle("fujiwara.internationalization.Errors", currentLocale);
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(content);
+        alert.setHeaderText(bundle.getString("header"));
+        alert.setContentText(bundle.getString("content"));
         alert.showAndWait();
     }
 
@@ -195,7 +263,7 @@ public class ShopController
 
     //</editor-fold>
 
-    //<editor-fold desc="debig-methods">
+    //<editor-fold desc="debug-methods">
 
     public void createTestData()
     {
@@ -209,21 +277,29 @@ public class ShopController
             item = new ShopItem();
             item.setPrice(800);
             item.setDateOfLastShipment(format.parse("January 31, 2018"));
+            item.setName("4A-GE CGS");
+            item.setImagePath("F:/4age/4age_cam_gear_set.jpeg");
             items.add(item);
 
             item = new ShopItem();
             item.setPrice(200);
             item.setDateOfLastShipment(format.parse("February 25, 2018"));
+            item.setName("4A-GE Head");
+            item.setImagePath("F:/4age/4age_head.jpeg");
             items.add(item);
 
             item = new ShopItem();
             item.setPrice(100);
             item.setDateOfLastShipment(format.parse("May 16, 2017"));
+            item.setName("4A-GE Stroker");
+            item.setImagePath("F:/4age/4age_stroker_kit.png");
             items.add(item);
 
             item = new ShopItem();
             item.setPrice(500);
             item.setDateOfLastShipment(format.parse("December 21, 2017"));
+            item.setName("4A-GE ECU");
+            item.setImagePath("F:/4age/4age_ecu.jpeg");
             items.add(item);
 
             initializeListView(items);
@@ -239,23 +315,30 @@ public class ShopController
 
     //<editor-fold desc="internationalization-methods">
 
-    public void selectLocaleUS()
+    public void setLocaleUS()
     {
-        updateGUI(usLocale);
+        currentLocale = usLocale;
+        updateGUI();
     }
 
-    public void selectLocalePL()
+    public void setLocalePL()
     {
-        updateGUI(plLocale);
+        currentLocale = plLocale;
+        updateGUI();
     }
 
-    private void updateGUI(Locale currentLocale)
+    private void updateGUI()
     {
-        updateButtons(currentLocale);
-        updateLabels(currentLocale);
+        adjustFormatters();
+        updateButtons();
+        updateLabels();
+        if (selectedItem != null)
+        {
+            initializeDetailView();
+        }
     }
 
-    private void updateButtons(Locale currentLocale)
+    private void updateButtons()
     {
         ResourceBundle bundle = ResourceBundle.getBundle("fujiwara.internationalization.Buttons", currentLocale);
         selectDirectoryButton.setText(bundle.getString("select_directory"));
@@ -265,11 +348,18 @@ public class ShopController
         selectImageButton.setText(bundle.getString("select_image"));
     }
 
-    private void updateLabels(Locale currentLocale)
+    private void updateLabels()
     {
         ResourceBundle bundle = ResourceBundle.getBundle("fujiwara.internationalization.Labels", currentLocale);
         dateLabel.setText(bundle.getString("date"));
         priceLabel.setText(bundle.getString("price"));
+    }
+
+    private void adjustFormatters()
+    {
+        Currency currency = Currency.getInstance(currentLocale);
+        priceFormatter = NumberFormat.getCurrencyInstance(currentLocale);
+        dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, currentLocale);
     }
 
     //</editor-fold>
