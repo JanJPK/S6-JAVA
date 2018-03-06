@@ -45,6 +45,9 @@ public class ShopController
     public Image detailViewImage;
     public ImageView detailViewImageView;
     public TextField nameTextField;
+    public TextField stockTextField;
+    public Label stockLabel;
+    public Label stockPluralsLabel;
     private File directory;
     private ShopItem selectedItem;
 
@@ -66,6 +69,8 @@ public class ShopController
         dateTextField.setText(dateFormatter.format(selectedItem.getDateOfLastShipment()));
         priceTextField.setText(priceFormatter.format(selectedItem.getPrice()));
         nameTextField.setText(selectedItem.getName());
+        stockTextField.setText(String.valueOf(selectedItem.getStock()));
+        updateStockPluralsLabel();
 
         if (selectedItem.getImagePath() == null)
         {
@@ -110,6 +115,15 @@ public class ShopController
         } catch (ParseException ex)
         {
             showDialogError("parse_header", "parse_price");
+            return;
+        }
+
+        try
+        {
+            selectedItem.setStock(Integer.parseInt(stockTextField.getText()));
+        }catch (NumberFormatException ex)
+        {
+            showDialogError("parse_header", "parse_stock");
             return;
         }
 
@@ -315,6 +329,7 @@ public class ShopController
             item.setDateOfLastShipment(format.parse("January 31, 2018"));
             item.setName("4A-GE CGS");
             item.setImagePath("F:/4age/4age_cam_gear_set.jpeg");
+            item.setStock(0);
             items.add(item);
 
             item = new ShopItem();
@@ -322,6 +337,7 @@ public class ShopController
             item.setDateOfLastShipment(format.parse("February 25, 2018"));
             item.setName("4A-GE Head");
             item.setImagePath("F:/4age/4age_head.jpeg");
+            item.setStock(1);
             items.add(item);
 
             item = new ShopItem();
@@ -329,6 +345,7 @@ public class ShopController
             item.setDateOfLastShipment(format.parse("May 16, 2017"));
             item.setName("4A-GE Stroker");
             item.setImagePath("F:/4age/4age_stroker_kit.png");
+            item.setStock(2);
             items.add(item);
 
             item = new ShopItem();
@@ -336,6 +353,7 @@ public class ShopController
             item.setDateOfLastShipment(format.parse("December 21, 2017"));
             item.setName("4A-GE ECU");
             item.setImagePath("F:/4age/4age_ecu.jpeg");
+            item.setStock(5);
             items.add(item);
 
             initializeListView(items);
@@ -396,6 +414,7 @@ public class ShopController
         ResourceBundle bundle = ResourceBundle.getBundle("fujiwara.internationalization.Labels", currentLocale);
         dateLabel.setText(bundle.getString("date"));
         priceLabel.setText(bundle.getString("price"));
+        stockLabel.setText(bundle.getString("stock"));
     }
 
     private void adjustFormatters()
@@ -403,6 +422,24 @@ public class ShopController
         Currency currency = Currency.getInstance(currentLocale);
         priceFormatter = NumberFormat.getCurrencyInstance(currentLocale);
         dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, currentLocale);
+    }
+
+    private void updateStockPluralsLabel()
+    {
+        ResourceBundle bundle = ResourceBundle.getBundle("fujiwara.internationalization.StockPlurals", currentLocale);
+        int quantity = selectedItem.getStock();
+        if(quantity == 0 || quantity > 5)
+        {
+            stockPluralsLabel.setText(bundle.getString("plural0_5"));
+            return;
+        }
+        if(quantity == 1)
+        {
+            stockPluralsLabel.setText(bundle.getString("plural1"));
+            return;
+        }
+        stockPluralsLabel.setText(bundle.getString("plural2"));
+
     }
 
     //</editor-fold>

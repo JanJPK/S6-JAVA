@@ -51,6 +51,13 @@
 
                 <Label fx:id="priceLabel" text="Price" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                 <TextField fx:id="priceTextField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label fx:id="stockLabel" text="Price" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="10">
+                    <TextField fx:id="stockTextField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Label fx:id="stockPluralsLabel"/>
+                </HBox>
+
                 <columnConstraints>
                     <ColumnConstraints/>
                     <ColumnConstraints/>
@@ -63,7 +70,7 @@
             <HBox alignment="TOP_CENTER" spacing="10">
                 <Button fx:id="saveShopItemButton" onAction="#saveShopItem"/>
                 <Button fx:id="removeShopItemButton" onAction="#removeShopItem"/>
-                <Button fx:id="selectImageButton" onAction="#selectShopItemImage"/>
+                <!--<Button fx:id="selectImageButton" onAction="#selectShopItemImage"/>-->
             </HBox>
         </VBox>
         <columnConstraints>

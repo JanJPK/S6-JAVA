@@ -20,6 +20,8 @@ public class ShopItem
     private String name;
     @XmlElement
     private long price;
+    @XmlElement
+    private int stock;
 
     //</editor-fold>
 
@@ -77,6 +79,16 @@ public class ShopItem
     public void setImagePath(String imagePath)
     {
         this.imagePath = imagePath;
+    }
+
+    public int getStock()
+    {
+        return stock;
+    }
+
+    public void setStock(int stock)
+    {
+        this.stock = stock;
     }
 
     //</editor-fold>
