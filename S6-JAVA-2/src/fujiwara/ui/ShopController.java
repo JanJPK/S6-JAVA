@@ -15,10 +15,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.nio.file.Files;
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.*;
 
 public class ShopController
@@ -31,23 +28,24 @@ public class ShopController
     private static Locale currentLocale;
     private static DateFormat dateFormatter;
     private static NumberFormat priceFormatter;
-    public GridPane mainGrid;
-    public ListView shopItemListView;
-    public Button newShopItemButton;
     public Button selectDirectoryButton;
-    public TextField dateTextField;
-    public Label dateLabel;
-    public TextField priceTextField;
-    public Label priceLabel;
-    public Button selectImageButton;
-    public Button removeShopItemButton;
-    public Button saveShopItemButton;
+    public Button newShopItemButton;
+    public ListView shopItemListView;
+    public TextField nameTextField;
     public Image detailViewImage;
     public ImageView detailViewImageView;
-    public TextField nameTextField;
-    public TextField stockTextField;
+    public Label dateLabel;
+    public TextField dateTextField;
+    public Label priceLabel;
+    public TextField priceTextField;
     public Label stockLabel;
+    public TextField stockTextField;
     public Label stockPluralsLabel;
+    public Label stockLabelAlt;
+    public Button saveShopItemButton;
+    public Button removeShopItemButton;
+    public GridPane mainGrid;
+
     private File directory;
     private ShopItem selectedItem;
 
@@ -71,6 +69,7 @@ public class ShopController
         nameTextField.setText(selectedItem.getName());
         stockTextField.setText(String.valueOf(selectedItem.getStock()));
         updateStockPluralsLabel();
+        updateStockPluralsAltLabel();
 
         if (selectedItem.getImagePath() == null)
         {
@@ -91,11 +90,6 @@ public class ShopController
         selectedItem.setPrice(0);
         selectedItem.setName("Product");
         initializeDetailView();
-    }
-
-    public void selectShopItemImage()
-    {
-
     }
 
     public void saveShopItem()
@@ -120,7 +114,10 @@ public class ShopController
 
         try
         {
-            selectedItem.setStock(Integer.parseInt(stockTextField.getText()));
+            int stock = Integer.parseInt(stockTextField.getText());
+            if(stock < 0)
+                throw new NumberFormatException();
+            selectedItem.setStock(stock);
         }catch (NumberFormatException ex)
         {
             showDialogError("parse_header", "parse_stock");
@@ -406,7 +403,6 @@ public class ShopController
         newShopItemButton.setText(bundle.getString("new"));
         saveShopItemButton.setText(bundle.getString("save"));
         removeShopItemButton.setText(bundle.getString("remove"));
-        selectImageButton.setText(bundle.getString("select_image"));
     }
 
     private void updateLabels()
@@ -442,5 +438,31 @@ public class ShopController
 
     }
 
+    private void updateStockPluralsAltLabel()
+    {
+        ResourceBundle bundle = ResourceBundle.getBundle("fujiwara.internationalization.StockPluralsAlt", currentLocale);
+        MessageFormat mf = new MessageFormat("");
+        mf.setLocale(currentLocale);
+
+        double[] stockThresholds = {0, 1, 2, 5};
+        String[] stockPlurals = {
+                bundle.getString("plural0_5"),
+                bundle.getString("plural1"),
+                bundle.getString("plural2"),
+                bundle.getString("plural0_5")
+        };
+        ChoiceFormat cf = new ChoiceFormat(stockThresholds, stockPlurals);
+
+        String pattern = bundle.getString("pattern");
+        mf.applyPattern(pattern);
+
+        Format[] formats = {NumberFormat.getInstance(), cf};
+        mf.setFormats(formats);
+
+        Object[] messageArguments = {selectedItem.getStock(), selectedItem.getStock()};
+        String result = mf.format(messageArguments);
+        stockLabelAlt.setText(result);
+
+    }
     //</editor-fold>
 }

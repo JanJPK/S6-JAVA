@@ -57,6 +57,8 @@
                     <TextField fx:id="stockTextField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                     <Label fx:id="stockPluralsLabel"/>
                 </HBox>
+                <Label GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3"
+                        fx:id="stockLabelAlt"/>
 
                 <columnConstraints>
                     <ColumnConstraints/>
@@ -70,7 +72,6 @@
             <HBox alignment="TOP_CENTER" spacing="10">
                 <Button fx:id="saveShopItemButton" onAction="#saveShopItem"/>
                 <Button fx:id="removeShopItemButton" onAction="#removeShopItem"/>
-                <!--<Button fx:id="selectImageButton" onAction="#selectShopItemImage"/>-->
             </HBox>
         </VBox>
         <columnConstraints>
