@@ -12,7 +12,7 @@ public class TreeDirectory
     //<editor-fold desc="variables">
 
     private File directory;
-    private List<File> images;
+    private List<ExtendedImageView> imageViews;
 
     //</editor-fold>
 
@@ -21,7 +21,7 @@ public class TreeDirectory
     public TreeDirectory(File directory)
     {
         this.directory = directory;
-        images = new ArrayList<>();
+        imageViews = new ArrayList<>();
     }
 
     //</editor-fold>
@@ -38,14 +38,19 @@ public class TreeDirectory
         this.directory = directory;
     }
 
-    public List<File> getImages()
+    public List<ExtendedImageView> getImageViews()
     {
-        return images;
+        return imageViews;
     }
 
-    public void setImages(List<File> images)
+    public void setImageViews(List<ExtendedImageView> imageViews)
     {
-        this.images = images;
+        this.imageViews = imageViews;
+    }
+
+    public boolean hasImages()
+    {
+        return !imageViews.isEmpty();
     }
 
     //</editor-fold>
@@ -70,10 +75,33 @@ public class TreeDirectory
             {
                 String path = file.getPath();
                 if (path.endsWith(".png") || path.endsWith(".jpg"))
-                    images.add(file);
+                    addImageView(file);
             }
         }
         return childrenDirectories;
+    }
+
+    private void addImageView(File file)
+    {
+        imageViews.add(new ExtendedImageView(file));
+    }
+
+    public void reloadImages()
+    {
+        imageViews.clear();
+        List<File> children = Arrays.asList(Objects.requireNonNull(directory.listFiles()));
+        for (File file : children)
+        {
+            if (file.isFile())
+                if (file.getPath().endsWith(".png") || file.getPath().endsWith(".jpg"))
+                    addImageView(file);
+        }
+    }
+
+    public void reloadImage(ExtendedImageView imageView)
+    {
+        imageViews.remove(imageView);
+        addImageView(imageView.getImageSource());
     }
 
     //</editor-fold>
