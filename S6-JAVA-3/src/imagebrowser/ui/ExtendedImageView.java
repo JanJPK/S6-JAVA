@@ -10,16 +10,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 
-public class ExtendedImageView extends StackPane
+public class ExtendedImageView extends StackPane implements Runnable
 {
 
     //<editor-fold desc="variables">
 
     private static BackgroundFill backgroundFill = new BackgroundFill(Color.web("#BFBFBF"), CornerRadii.EMPTY, Insets.EMPTY);
     private File imageSource;
-    private WeakReference<Image> image;
+    private SoftReference<Image> image;
     private ImageView imageView;
 
     //</editor-fold>
@@ -34,7 +34,7 @@ public class ExtendedImageView extends StackPane
         setMaxHeight(80);
         setMaxWidth(80);
         setBackground(new Background(backgroundFill));
-        image = new WeakReference<>(null);
+        image = new SoftReference<>(null);
         imageView = new ImageView();
         imageView.setFitHeight(80);
         imageView.setFitWidth(80);
@@ -63,24 +63,24 @@ public class ExtendedImageView extends StackPane
 
     public void setImage(Image image)
     {
-        this.image = new WeakReference<Image>(image);
+        this.image = new SoftReference<Image>(image);
     }
 
     //</editor-fold>
 
     //<editor-fold desc="methods">
 
-    public void load()
+    public void run()
     {
         if (image.get() == null)
         {
             if (imageSource.exists())
             {
-                image = new WeakReference<>(new Image("file:" + imageSource.getPath()));
+                image = new SoftReference<>(new Image("file:" + imageSource.getPath()));
             }
         }
         imageView.setImage(image.get());
-    }
 
+    }
     //</editor-fold>
 }

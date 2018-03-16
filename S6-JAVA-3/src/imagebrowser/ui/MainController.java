@@ -99,8 +99,8 @@ public class MainController
         {
             for (ExtendedImageView imageView : selectedDirectory.getImageViews())
             {
-                imageView.load();
                 miniaturesFlowPane.getChildren().add(imageView);
+                new Thread(imageView).start();
             }
         }
     }
