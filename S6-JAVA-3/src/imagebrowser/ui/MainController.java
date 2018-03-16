@@ -5,6 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -24,8 +26,10 @@ public class MainController
     public StackPane treeStackPane;
     public GridPane mainGridPane;
     public Label selectedDirectoryLabel;
+    public StackPane imageStackPane;
     private TreeView<TreeDirectory> treeView;
     private TreeDirectory selectedDirectory;
+    private ExtendedImageView selectedImageView;
 
     //</editor-fold>
 
@@ -33,7 +37,6 @@ public class MainController
 
     public void initialize()
     {
-
     }
 
     //</editor-fold>
@@ -82,10 +85,16 @@ public class MainController
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null))
         {
             selectedDirectory = (TreeDirectory) ((TreeItem) treeView.getSelectionModel().getSelectedItem()).getValue();
-            selectedDirectoryLabel.setText("Now browsing: " + selectedDirectory.getDirectory().getName() + " | Images: " + selectedDirectory.getImageViews().size());
+            selectedDirectoryLabel.setText("Now browsing: "
+                    + selectedDirectory.getDirectory().getName()
+                    + " | Images: "
+                    + selectedDirectory.getImageViews().size());
+            if (selectedDirectory.hasImages())
+            {
+                loadMiniatures();
+            }
         }
 
-        loadMiniatures();
     }
 
     //</editor-fold>
@@ -95,14 +104,23 @@ public class MainController
     private void loadMiniatures()
     {
         miniaturesFlowPane.getChildren().clear();
-        if (selectedDirectory.hasImages())
+        for (ExtendedImageView imageView : selectedDirectory.getImageViews())
         {
-            for (ExtendedImageView imageView : selectedDirectory.getImageViews())
-            {
-                miniaturesFlowPane.getChildren().add(imageView);
-                new Thread(imageView).start();
-            }
+            addEventHandlerToImageView(imageView);
+            miniaturesFlowPane.getChildren().add(imageView);
+            new Thread(imageView).start();
         }
+    }
+
+    private void addEventHandlerToImageView(ExtendedImageView extendedImageView)
+    {
+        extendedImageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                event ->
+                {
+                    selectedImageView = extendedImageView;
+                    loadImage();
+                });
+
     }
 
     public void testMiniature()
@@ -110,7 +128,21 @@ public class MainController
         miniaturesFlowPane.getChildren().add(new ExtendedImageView(null));
     }
 
+
     //</editor-fold>
 
+    //<editor-fold desc="image-methods">
 
+    private void loadImage()
+    {
+        imageStackPane.getChildren().clear();
+        Image image = new Image("file:" + selectedImageView.getImageSource().getAbsolutePath());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(imageStackPane.getHeight());
+        imageView.setFitWidth(imageStackPane.getWidth());
+        imageView.setPreserveRatio(true);
+        imageStackPane.getChildren().add(imageView);
+    }
+
+    //</editor-fold>
 }

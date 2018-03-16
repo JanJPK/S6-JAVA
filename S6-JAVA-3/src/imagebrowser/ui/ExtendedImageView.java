@@ -34,6 +34,7 @@ public class ExtendedImageView extends StackPane implements Runnable
         setMaxHeight(80);
         setMaxWidth(80);
         setBackground(new Background(backgroundFill));
+        setStyle("-fx-border-color: #0096C9");
         image = new SoftReference<>(null);
         imageView = new ImageView();
         imageView.setFitHeight(80);
@@ -66,6 +67,11 @@ public class ExtendedImageView extends StackPane implements Runnable
         this.image = new SoftReference<Image>(image);
     }
 
+    public ImageView getImageView()
+    {
+        return imageView;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="methods">
@@ -82,5 +88,7 @@ public class ExtendedImageView extends StackPane implements Runnable
         imageView.setImage(image.get());
 
     }
+
+
     //</editor-fold>
 }

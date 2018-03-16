@@ -1,28 +1,64 @@
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="mainGridPane"
           fx:controller="imagebrowser.ui.MainController" alignment="center" hgap="10" vgap="10">
 
-    <HBox GridPane.columnIndex="0" GridPane.rowIndex="1"
-          spacing="15">
-        <Button text="Directory" onAction="#selectRootDirectory"/>
+    <!-- Directory tree -->
+    <HBox GridPane.columnIndex="0"
+          GridPane.rowIndex="1"
+          spacing="15"
+          alignment="CENTER_LEFT"
+          style="-fx-border-color: #0096C9">
+        <Button text="Directory"
+                onAction="#selectRootDirectory"/>
     </HBox>
-    <StackPane GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.rowSpan="2"
+    <StackPane GridPane.columnIndex="0"
+               GridPane.rowIndex="2"
+               GridPane.rowSpan="2"
+               style="-fx-border-color: #0096C9"
                fx:id="treeStackPane"/>
 
-    <HBox GridPane.columnIndex="1" GridPane.rowIndex="1"
-          spacing="15">
-        <Button text="Add miniature" onAction="#testMiniature"/>
+    <!-- Miniature browsing -->
+    <HBox GridPane.columnIndex="1"
+          GridPane.rowIndex="1"
+          spacing="15"
+          alignment="CENTER_LEFT"
+          style="-fx-border-color: #0096C9">
+        <Button text="Add miniature"
+                onAction="#testMiniature"/>
         <Label fx:id="selectedDirectoryLabel"/>
     </HBox>
-    <FlowPane GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2"
-              fx:id="miniaturesFlowPane" hgap="15" vgap="15"/>
+
+    <ScrollPane GridPane.columnIndex="1"
+                GridPane.rowIndex="2"
+                GridPane.rowSpan="2"
+                fitToWidth="true"
+                style="-fx-border-color: #0096C9">
+        <FlowPane
+                fx:id="miniaturesFlowPane"
+                hgap="15" vgap="15"
+                prefWidth="Infinity"/>
+    </ScrollPane>
+
+    <!-- Image view -->
+    <HBox GridPane.columnIndex="2"
+          GridPane.rowIndex="1"
+          spacing="15"
+          alignment="CENTER_LEFT"
+          style="-fx-border-color: #0096C9">
+
+        <Button text="Negative"/>
+    </HBox>
+    <StackPane GridPane.columnIndex="2"
+               GridPane.rowIndex="2"
+               GridPane.rowSpan="2"
+               style="-fx-border-color: #0096C9"
+               fx:id="imageStackPane"/>
 
 
     <rowConstraints>
         <RowConstraints prefHeight="20"/>
-        <RowConstraints prefHeight="20"/>
+        <RowConstraints prefHeight="35"/>
         <RowConstraints vgrow="ALWAYS"/>
         <RowConstraints prefHeight="20"/>
         <RowConstraints prefHeight="20"/>
