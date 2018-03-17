@@ -47,7 +47,7 @@
           alignment="CENTER_LEFT"
           style="-fx-border-color: #0096C9">
 
-        <Button text="Negative"/>
+        <Button text="Grayscale" onAction="#testGrayscale"/>
     </HBox>
     <StackPane GridPane.columnIndex="2"
                GridPane.rowIndex="2"

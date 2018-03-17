@@ -1,5 +1,6 @@
 package imagebrowser.ui;
 
+import imagebrowser.plugin.ExtendedClassLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
@@ -15,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class MainController
@@ -30,6 +32,7 @@ public class MainController
     private TreeView<TreeDirectory> treeView;
     private TreeDirectory selectedDirectory;
     private ExtendedImageView selectedImageView;
+    private ExtendedClassLoader classLoader;
 
     //</editor-fold>
 
@@ -37,6 +40,8 @@ public class MainController
 
     public void initialize()
     {
+        classLoader = new ExtendedClassLoader();
+        testPluginLoad();
     }
 
     //</editor-fold>
@@ -128,7 +133,6 @@ public class MainController
         miniaturesFlowPane.getChildren().add(new ExtendedImageView(null));
     }
 
-
     //</editor-fold>
 
     //<editor-fold desc="image-methods">
@@ -142,6 +146,29 @@ public class MainController
         imageView.setFitWidth(imageStackPane.getWidth());
         imageView.setPreserveRatio(true);
         imageStackPane.getChildren().add(imageView);
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="test-methods">
+
+    private void testPluginLoad()
+    {
+        ExtendedClassLoader ecl = new ExtendedClassLoader();
+        //ecl.load("imagebrowser.plugin.ImageModifier");
+        Class cl = ecl.getClass("imagebrowser.plugin.ImageModifier");
+        Method xd = ecl.getMethod(cl, "grayscale");
+        int xdd;
+    }
+
+    public void testGrayscale()
+    {
+        Class cl = classLoader.getClass("imagebrowser.plugin.ImageModifier");
+        Image input = selectedImageView.getImage();
+        Image output = classLoader.invokeImage(cl, "grayscale", input);
+//        ImageModifier im = new ImageModifier();
+//        Image output = im.grayscale(selectedImageView.getImage());
+        selectedImageView.getImageView().setImage(output);
     }
 
     //</editor-fold>
