@@ -1,11 +1,9 @@
 package imagebrowser.ui;
 
 import imagebrowser.plugin.ExtendedClassLoader;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,8 +13,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.lang.reflect.Method;
+import java.io.IOException;
 import java.util.List;
 
 public class MainController
@@ -29,9 +29,10 @@ public class MainController
     public GridPane mainGridPane;
     public Label selectedDirectoryLabel;
     public StackPane imageStackPane;
+    public ImageView selectedImageView;
     private TreeView<TreeDirectory> treeView;
     private TreeDirectory selectedDirectory;
-    private ExtendedImageView selectedImageView;
+    private ExtendedImageView selectedMiniatureImageView;
     private ExtendedClassLoader classLoader;
 
     //</editor-fold>
@@ -41,7 +42,6 @@ public class MainController
     public void initialize()
     {
         classLoader = new ExtendedClassLoader();
-        testPluginLoad();
     }
 
     //</editor-fold>
@@ -122,7 +122,7 @@ public class MainController
         extendedImageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 event ->
                 {
-                    selectedImageView = extendedImageView;
+                    selectedMiniatureImageView = extendedImageView;
                     loadImage();
                 });
 
@@ -139,36 +139,69 @@ public class MainController
 
     private void loadImage()
     {
-        imageStackPane.getChildren().clear();
-        Image image = new Image("file:" + selectedImageView.getImageSource().getAbsolutePath());
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(imageStackPane.getHeight());
-        imageView.setFitWidth(imageStackPane.getWidth());
-        imageView.setPreserveRatio(true);
-        imageStackPane.getChildren().add(imageView);
+        Image image = new Image("file:"
+                + selectedMiniatureImageView
+                .getImageSource()
+                .getAbsolutePath());
+        selectedImageView.setImage(image);
+        selectedImageView.setFitHeight(imageStackPane.getHeight());
+        selectedImageView.setFitWidth(imageStackPane.getWidth());
+        selectedImageView.setPreserveRatio(true);
     }
 
-    //</editor-fold>
-
-    //<editor-fold desc="test-methods">
-
-    private void testPluginLoad()
+    public void saveImage()
     {
-        ExtendedClassLoader ecl = new ExtendedClassLoader();
-        //ecl.load("imagebrowser.plugin.ImageModifier");
-        Class cl = ecl.getClass("imagebrowser.plugin.ImageModifier");
-        Method xd = ecl.getMethod(cl, "grayscale");
-        int xdd;
+        if (selectedImageView != null)
+        {
+            File file = selectedMiniatureImageView.getImageSource();
+            BufferedImage bufferedImage = SwingFXUtils
+                    .fromFXImage(selectedImageView.getImage(), null);
+            try
+            {
+                ImageIO.write(bufferedImage, "png", file);
+                selectedMiniatureImageView.setImageSource(file);
+                selectedMiniatureImageView.reloadImage();
+            } catch (IOException ex)
+            {
+                showDialogError("IO exception!", "Unable to save image.");
+            }
+
+        }
     }
 
-    public void testGrayscale()
+    public void modifyImageGrayscale()
     {
         Class cl = classLoader.getClass("imagebrowser.plugin.ImageModifier");
         Image input = selectedImageView.getImage();
         Image output = classLoader.invokeImage(cl, "grayscale", input);
-//        ImageModifier im = new ImageModifier();
-//        Image output = im.grayscale(selectedImageView.getImage());
-        selectedImageView.getImageView().setImage(output);
+        selectedImageView.setImage(output);
+    }
+
+    public void modifyImageRotate()
+    {
+        Class cl = classLoader.getClass("imagebrowser.plugin.ImageModifier");
+        Image input = selectedImageView.getImage();
+        Image output = classLoader.invokeImage(cl, "rotate", input);
+        selectedImageView.setImage(output);
+    }
+
+    private String getExtension(File file)
+    {
+        int index = file.getPath().lastIndexOf('.');
+        return file.getPath().substring(index + 1);
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="misc-methods">
+
+    private void showDialogError(String header, String content)
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     //</editor-fold>

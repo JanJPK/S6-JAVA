@@ -3,6 +3,8 @@ package imagebrowser.plugin;
 import javafx.scene.image.Image;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class ImageModifier
@@ -29,17 +31,18 @@ public class ImageModifier
         return ic.bufferedImageToImage(bufferedInput);
     }
 
-    public Image rotate(Image input, int degrees)
+    public Image rotate(Image input)
     {
-        Image output = null;
 
-        if (degrees < 0)
-            degrees = 90;
-        while (degrees > 360)
-        {
-            degrees -= 360;
-        }
-
-        return output;
+        ImageConverter ic = new ImageConverter();
+        BufferedImage bufferedInput = ic.imageToBufferedImage(input);
+        int width = bufferedInput.getWidth();
+        int height = bufferedInput.getHeight();
+        AffineTransform transform = new AffineTransform();
+        transform.rotate(Math.PI / 2, width / 2, height / 2);
+        AffineTransformOp transformOp = new AffineTransformOp(transform,
+                AffineTransformOp.TYPE_BILINEAR);
+        BufferedImage bufferedOutput = transformOp.filter(bufferedInput, null);
+        return ic.bufferedImageToImage(bufferedOutput);
     }
 }

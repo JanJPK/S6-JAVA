@@ -3,23 +3,14 @@ package imagebrowser.plugin;
 import javafx.scene.image.Image;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExtendedClassLoader extends ClassLoader
 {
-
-    //<editor-fold desc="variables">
-
-    private List<Class> loadedClasses;
-
-    //</editor-fold>
 
     //<editor-fold desc="constructor">
 
     public ExtendedClassLoader()
     {
-        loadedClasses = new ArrayList<>();
     }
 
     //</editor-fold>
@@ -52,18 +43,6 @@ public class ExtendedClassLoader extends ClassLoader
         {
             return null;
         }
-    }
-
-    private Class searchLoadedClasses(String name)
-    {
-        for (Class loadedClass : loadedClasses)
-        {
-            if (loadedClass.getName().equals(name))
-            {
-                return loadedClass;
-            }
-        }
-        return null;
     }
 
     public Image invokeImage(Class loadedClass, String methodName, Image input)

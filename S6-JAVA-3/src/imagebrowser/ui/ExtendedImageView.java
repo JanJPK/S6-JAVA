@@ -89,6 +89,11 @@ public class ExtendedImageView extends StackPane implements Runnable
 
     }
 
+    public void reloadImage()
+    {
+        image = new SoftReference<>(new Image("file:" + imageSource.getPath()));
+        imageView.setImage(image.get());
+    }
 
     //</editor-fold>
 }
