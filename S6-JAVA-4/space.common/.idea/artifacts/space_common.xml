@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="space.common">
+    <output-path>$PROJECT_DIR$/out/artifacts/space_common</output-path>
+    <root id="archive" name="space.common.jar">
+      <element id="module-output" name="space.common" />
+    </root>
+  </artifact>
+</component>
