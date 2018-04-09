@@ -24,7 +24,7 @@ public class SpaceServer extends UnicastRemoteObject implements SpaceInterfaceSe
     @Override
     public void registerPlayer(SpaceInterfacePlayer connection, SpaceCommandType type, String name) throws RemoteException
     {
-        System.out.println("Player " + name + type + " has connected.");
+        System.out.println("Player " + name + " " + type + " has connected.");
         ConnectedPlayer player = new ConnectedPlayer(connection, type, name);
         players.put(name, player);
         if (commander != null)
@@ -41,7 +41,7 @@ public class SpaceServer extends UnicastRemoteObject implements SpaceInterfaceSe
     {
         System.out.println("Commander " + name + " has connected.");
         commander = new ConnectedCommander(connection, name);
-        commander.getConnection().receiveScore(2137);
+        //commander.getConnection().receiveScore(2137);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class SpaceServer extends UnicastRemoteObject implements SpaceInterfaceSe
     @Override
     public void broadcastScore(int score) throws RemoteException
     {
-        System.out.println("Score changed by " + score);
+        System.out.println("Score changed by " + score + ".");
         commander.getConnection().receiveScore(score);
     }
 

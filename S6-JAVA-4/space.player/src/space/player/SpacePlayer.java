@@ -39,6 +39,13 @@ public class SpacePlayer extends UnicastRemoteObject implements SpaceInterfacePl
         }
     }
 
+    public SpaceInterfaceServer getServer()
+    {
+        return server;
+    }
+
+    //<editor-fold desc="rmi">
+
     @Override
     public void confirmConnection(String s) throws RemoteException
     {
@@ -48,6 +55,12 @@ public class SpacePlayer extends UnicastRemoteObject implements SpaceInterfacePl
     @Override
     public void receiveCommand(SpaceCommand spaceCommand) throws RemoteException
     {
-
+        System.out.println("Received command " + spaceCommand.getType() + " " + spaceCommand.getParameters() + ".");
+        String text = spaceCommand.getType().name() + " " + spaceCommand.getParameters().toString();
+        controller.textField.setText(text);
+        controller.CurrentCommand = spaceCommand;
     }
+
+    //</editor-fold>
+
 }

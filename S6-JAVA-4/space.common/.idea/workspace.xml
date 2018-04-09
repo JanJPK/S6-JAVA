@@ -7,23 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1467314a-968f-4d07-b279-1773149b5a47" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../space.commander/.idea/saveactions_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space.commander/src/space/commander/SpaceCommander.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/space/common/SpaceInterfaceCommander.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/space/common/SpaceInterfacePlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/space/common/SpaceInterfaceServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space.player/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space.player/.idea/saveactions_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space.player/src/space/player/SpacePlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space.server/.idea/saveactions_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space.server/src/space/server/ConnectedCommander.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space.server/src/space/server/ConnectedPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space.server/src/space/server/SpaceServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../space.common.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../space.common.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space.bean/.idea/artifacts/space_bean.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space.bean/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space.bean/src/space/bean/Bean.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/space_common/space.common.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/space_common/space.common.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/space.common/space/test/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/space/test/Main.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,11 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SpaceCommand.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SpaceCommand.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/space/common/SpaceCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+            <state relative-caret-position="435">
+              <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#394#395#0" expanded="true" />
@@ -55,7 +42,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SpaceCommandType.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SpaceCommandType.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/space/common/SpaceCommandType.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
@@ -76,7 +63,7 @@
       <file leaf-file-name="SpaceInterfaceCommander.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfaceCommander.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
+            <state relative-caret-position="120">
               <caret line="10" column="61" selection-start-line="10" selection-start-column="61" selection-end-line="10" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -88,7 +75,7 @@
       <file leaf-file-name="SpaceInterfacePlayer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfacePlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
+            <state relative-caret-position="135">
               <caret line="10" selection-start-line="10" selection-end-line="10" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -150,8 +137,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -175,6 +160,8 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -240,20 +227,19 @@
       <workItem from="1523125654615" duration="921000" />
       <workItem from="1523129660241" duration="2211000" />
       <workItem from="1523133202188" duration="3170000" />
-      <workItem from="1523139606468" duration="1395000" />
+      <workItem from="1523139606468" duration="2039000" />
+      <workItem from="1523303840888" duration="49000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13444000" />
+    <option name="totallyTimeSpent" value="14137000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
@@ -265,7 +251,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2585288" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26119402" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -279,6 +265,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Messages" order="7" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,6 +275,58 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#394#395#0" expanded="true" />
+            <element signature="e#421#422#0" expanded="true" />
+            <element signature="e#475#476#0" expanded="true" />
+            <element signature="e#507#508#0" expanded="true" />
+            <element signature="e#555#556#0" expanded="true" />
+            <element signature="e#588#589#0" expanded="true" />
+            <element signature="e#651#652#0" expanded="true" />
+            <element signature="e#695#696#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceCommandType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfaceServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfaceCommander.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="61" selection-start-line="10" selection-start-column="61" selection-end-line="10" selection-end-column="61" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfacePlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/space/common/SpaceCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -594,16 +633,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/space/test/Main.java" />
-    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfaceServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfacePlayer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
+        <state relative-caret-position="135">
           <caret line="10" selection-start-line="10" selection-end-line="10" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -613,7 +645,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfaceCommander.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
+        <state relative-caret-position="120">
           <caret line="10" column="61" selection-start-line="10" selection-start-column="61" selection-end-line="10" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -621,10 +653,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceInterfaceServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceCommandType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/space/common/SpaceCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        <state relative-caret-position="435">
+          <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#394#395#0" expanded="true" />
@@ -636,13 +682,6 @@
             <element signature="e#651#652#0" expanded="true" />
             <element signature="e#695#696#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/space/common/SpaceCommandType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -705,7 +744,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

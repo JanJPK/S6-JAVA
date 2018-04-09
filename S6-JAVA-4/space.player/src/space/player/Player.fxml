@@ -1,0 +1,28 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="space.player.PlayerController" alignment="center" hgap="10" vgap="10">
+    <rowConstraints>
+        <RowConstraints percentHeight="20"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="70"/>
+    </rowConstraints>
+
+    <HBox>
+        <VBox>
+            <RadioButton text="AIM" fx:id="radioButtonAIM"/>
+            <RadioButton text="BOOST" fx:id="radioButtonBOOST"/>
+            <RadioButton text="CALIBRATE" fx:id="radioButtonCALIBRATE"/>
+        </VBox>
+        <VBox>
+            <TextField fx:id="textFieldName"/>
+            <Button text="Start" onAction="#connect"/>
+            <Button text="Stop" onAction="#disconnect"/>
+        </VBox>
+    </HBox>
+    <TextField GridPane.rowIndex="1"
+               fx:id="textField"/>
+    <VBox GridPane.rowIndex="2"
+          fx:id="vBox"/>
+
+</GridPane>
