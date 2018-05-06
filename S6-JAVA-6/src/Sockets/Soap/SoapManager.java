@@ -42,7 +42,9 @@ public class SoapManager
             SOAPBody body = envelope.getBody();
 
             header.addAttribute(envelope.createName("Id"), unsoapedMessage.getId());
+            header.addAttribute(envelope.createName("TargetPort"), unsoapedMessage.getTargetPort());
             header.addAttribute(envelope.createName("Layer"), unsoapedMessage.getLayer());
+            header.addAttribute(envelope.createName("MessageType"), unsoapedMessage.getType().toString());
             SOAPBodyElement bodyElement = body.addBodyElement(envelope.createName("Message"));
             bodyElement.addChildElement("MessageText").addTextNode(unsoapedMessage.getMessage());
 
@@ -67,7 +69,9 @@ public class SoapManager
 
             UnsoapedMessage unsoapedMessage = new UnsoapedMessage();
             unsoapedMessage.setId(header.getAttribute("Id"));
+            unsoapedMessage.setTargetPort(header.getAttribute("TargetPort"));
             unsoapedMessage.setLayer(header.getAttribute("Layer"));
+            unsoapedMessage.setType(header.getAttribute("MessageType"));
             NodeList messageNode = body.getElementsByTagName("MessageText");
             unsoapedMessage.setMessage(messageNode.item(0).getChildNodes().item(0).getNodeValue());
 
