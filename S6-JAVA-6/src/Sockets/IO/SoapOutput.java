@@ -55,7 +55,7 @@ public class SoapOutput
     {
         try
         {
-            Socket socket = new Socket(String.valueOf(parentPort), targetNodeInformation.getPort());
+            Socket socket = new Socket("localhost", targetNodeInformation.getPort());
             SOAPMessage soapedMessage = soapManager.encode(message);
             String stringifiedSoap = stringifySoap(soapedMessage);
             if (stringifiedSoap != null)

@@ -41,6 +41,8 @@ public class ServerThread implements Runnable
             this.inbox = inbox;
             work = true;
             processedMessages = new ArrayList<>();
+            System.out.println("Server started");
+            System.out.println("Listening on port: " + nodeInformation.getPort());
         } catch (Exception ex)
         {
             System.out.println("Exception: " + ex.getMessage());
@@ -64,6 +66,7 @@ public class ServerThread implements Runnable
             try
             {
                 Socket socket = serverSocket.accept();
+                System.out.println("Received connection request: " + socket.getPort());
                 BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String lines = input.lines().collect(Collectors.joining());
                 if (!Objects.equals(lines, ""))
@@ -88,19 +91,21 @@ public class ServerThread implements Runnable
     private void processMessage(UnsoapedMessage message)
     {
         processedMessages.add(message.getId());
+        System.out.println("Processing message of type: " + message.getType() + "; id: " + message.getId());
+        System.out.println("Port: " + message.getTargetPort());
+        System.out.println("Layer: " + message.getLayer());
         switch (message.getType())
         {
             case SINGLE:
             {
-                if (message.getTargetPort().equals(nodeInformation.getPort()))
+                if (message.getTargetPort().equals(String.valueOf(nodeInformation.getPort())))
                 {
-                    inbox.appendText(message.getMessage());
+                    inbox.appendText(message.getMessage() + "\n");
                 } else
                 {
                     for (SoapOutput ot : soapOutputs)
                     {
-                        if (ot.getTargetNodeInformation().getLayer().equals(message.getLayer()))
-                            send(message, ot);
+                        send(message, ot);
                     }
                 }
                 break;
@@ -110,21 +115,19 @@ public class ServerThread implements Runnable
             {
                 if (message.getLayer().equals(nodeInformation.getLayer()))
                 {
-                    inbox.appendText(message.getMessage());
-                } else
+                    inbox.appendText(message.getMessage() + "\n");
+                }
+                for (SoapOutput ot : soapOutputs)
                 {
-                    for (SoapOutput ot : soapOutputs)
-                    {
-                        if (!ot.getTargetNodeInformation().getLayer().equals(message.getLayer()))
-                            send(message, ot);
-                    }
+                    if (!ot.getTargetNodeInformation().getLayer().equals(message.getLayer()))
+                        send(message, ot);
                 }
                 break;
             }
 
             case ALLLAYERS:
             {
-                inbox.appendText(message.getMessage());
+                inbox.appendText(message.getMessage() + "\n");
                 for (SoapOutput ot : soapOutputs)
                 {
                     send(message, ot);
@@ -134,9 +137,9 @@ public class ServerThread implements Runnable
         }
     }
 
-    private void send(UnsoapedMessage message, SoapOutput thread)
+    private void send(UnsoapedMessage message, SoapOutput soapOutput)
     {
-
+        soapOutput.send(message);
     }
 
     //</editor-fold>
