@@ -1,0 +1,80 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="Sockets.App.SocketsController" alignment="center" hgap="20" vgap="20">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+    </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints percentWidth="50"/>
+        <ColumnConstraints percentWidth="50"/>
+    </columnConstraints>
+
+    <VBox GridPane.rowIndex="0"
+          GridPane.columnIndex="0"
+          spacing="15">
+        <Label text="Port:"/>
+        <TextField fx:id="textFieldPort"/>
+        <Button text="Start" onAction="#start"/>
+    </VBox>
+
+    <VBox GridPane.rowIndex="0"
+          GridPane.columnIndex="1"
+          spacing="15">
+        <Label text="Layer:"/>
+        <TextField fx:id="textFieldLayer"/>
+    </VBox>
+
+    <VBox GridPane.rowIndex="1"
+          GridPane.columnIndex="0"
+          spacing="15">
+        <Label text="Connect to port:"/>
+        <TextField fx:id="textFieldTargetPort"/>
+        <TextField fx:id="textFieldTargetLayer"/>
+        <Button text="Connect" onAction="#connectToTargetPort"/>
+    </VBox>
+
+    <VBox GridPane.rowIndex="1"
+          GridPane.columnIndex="1"
+          spacing="15">
+        <Label text="Quick config"/>
+        <TextField fx:id="textFieldQuickConfig"/>
+        <Button text="Go" onAction="#quickConfig"/>
+    </VBox>
+
+    <VBox GridPane.rowIndex="2"
+          GridPane.columnIndex="0"
+          GridPane.columnSpan="2"
+          spacing="15">
+        <Label text="Inbox:"/>
+        <TextArea fx:id="textAreaInbox"/>
+    </VBox>
+
+    <VBox GridPane.rowIndex="3"
+          GridPane.columnIndex="0"
+          GridPane.columnSpan="2"
+          spacing="15">
+        <Label text="Outbox:"/>
+        <TextArea fx:id="textAreaOutbox"/>
+        <HBox spacing="15" alignment="CENTER">
+            <VBox spacing="15">
+                <Label text="Target: "/>
+                <TextField fx:id="textFieldMessageTarget"/>
+            </VBox>
+
+            <VBox spacing="5">
+                <RadioButton text="SINGLE" fx:id="radioButtonSingle"/>
+                <RadioButton text="LAYER" fx:id="radioButtonLayer"/>
+                <RadioButton text="ALLLAYERS" fx:id="radioButtonAlllayers"/>
+            </VBox>
+            <Button text="Send" onAction="#sendMessage"/>
+        </HBox>
+    </VBox>
+</GridPane>

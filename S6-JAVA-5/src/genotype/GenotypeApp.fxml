@@ -1,0 +1,43 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="genotype.GenotypeAppController" alignment="center" hgap="10" vgap="10">
+    <padding>
+        <Insets top="25" right="25" bottom="25" left="25"/>
+    </padding>
+    <rowConstraints>
+        <RowConstraints percentHeight="5"/>
+        <RowConstraints percentHeight="5"/>
+        <RowConstraints percentHeight="40"/>
+        <RowConstraints percentHeight="45"/>
+        <RowConstraints percentHeight="5"/>
+    </rowConstraints>
+
+    <HBox GridPane.rowIndex="0" spacing="15">
+        <TextField fx:id="textFieldDatabase" prefWidth="150"/>
+        <Button text="Connect" onAction="#connect" prefWidth="70"/>
+        <Button text="Disconnect" onAction="#disconnect" prefWidth="70"/>
+    </HBox>
+
+    <HBox GridPane.rowIndex="1" spacing="15">
+        <TextField fx:id="textFieldGenotype"/>
+        <Button text="Add" onAction="#addGenotype" prefWidth="70"/>
+        <Button text="Add (T)" onAction="#addGenotypeToTransaction" prefWidth="70"/>
+    </HBox>
+
+    <VBox GridPane.rowIndex="2" spacing="15">
+        <Label text="Pending transaction:"/>
+        <TextArea fx:id="textAreaTransaction"/>
+        <Button text="Commit" onAction="#commitTransaction" prefWidth="70"/>
+    </VBox>
+
+    <VBox GridPane.rowIndex="3" spacing="15">
+        <Label text="History:"/>
+        <TextArea fx:id="textAreaHistory"/>
+    </VBox>
+
+    <HBox GridPane.rowIndex="4" spacing="15">
+        <Button text="XML" onAction="#exportHistoryToXML" prefWidth="70"/>
+    </HBox>
+</GridPane>

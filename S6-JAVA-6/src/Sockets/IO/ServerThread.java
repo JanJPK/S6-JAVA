@@ -119,8 +119,7 @@ public class ServerThread implements Runnable
                 }
                 for (SoapOutput ot : soapOutputs)
                 {
-                    if (!ot.getTargetNodeInformation().getLayer().equals(message.getLayer()))
-                        send(message, ot);
+                    send(message, ot);
                 }
                 break;
             }
