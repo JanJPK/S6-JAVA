@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp spec="1.0+" codebase="http://localhost:9001/" href="jnlp_deer.jnlp">
+	<information>
+		<title>Sacred Deer</title>
+		<vendor>Pajeet</vendor>
+		<homepage href="http://localhost:9001/" />
+		<description>Deer</description>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.6+" />
+		<jar href="S6-JAVA-8.jar" />
+	</resources>
+	<application-desc main-class="deer.Main" />
+</jnlp>
