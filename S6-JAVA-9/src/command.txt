@@ -1,0 +1,5 @@
+javac -h . HelloJNI.java
+x86_64-w64-mingw32-gcc -I"C:\Program Files\Java\jdk1.8.0_161\include" -I"C:\Program Files\Java\jdk1.8.0_161\include\win32" -shared -o hello.dll DotProduct.c
+
+C:\Program Files\Java\jdk1.8.0_161
+gcc -I"%JAVA_HOME%\include" -I"%JAVA_HOME%\include\win32" -shared -o hello.dll DotProduct.c
